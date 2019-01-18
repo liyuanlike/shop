@@ -51,8 +51,7 @@
         <!-- Redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-redis</artifactId>
-            <version>1.4.7.RELEASE</version>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <!-- Elasticsearch -->
         <dependency>
@@ -94,6 +93,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.20</version>
+        </dependency>
+        <!-- FastJson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.54</version>
         </dependency>
         <!-- Jasypt -->
         <dependency>

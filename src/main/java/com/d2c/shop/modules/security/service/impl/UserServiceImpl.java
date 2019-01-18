@@ -9,31 +9,41 @@ import com.d2c.shop.modules.security.model.UserDO;
 import com.d2c.shop.modules.security.service.RoleService;
 import com.d2c.shop.modules.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author BaiCai
  */
-@CacheConfig(cacheNames = "USER")
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private RedisTemplate<String, UserDO> redisTemplate;
 
     @Override
-    @Cacheable(key = "'findByUsername:'+#username")
     public UserDO findByUsername(String username) {
-        Wrapper<UserDO> queryWrapper = new QueryWrapper();
-        ((QueryWrapper<UserDO>) queryWrapper).eq("username", username);
-        UserDO user = this.getOne(queryWrapper);
+        UserDO user = null;
+        String key = "USER::findByUsername:" + username;
+        UserDO cache = redisTemplate.opsForValue().get(key);
+        if (cache != null) {
+            user = cache;
+        } else {
+            Wrapper<UserDO> queryWrapper = new QueryWrapper();
+            ((QueryWrapper<UserDO>) queryWrapper).eq("username", username);
+            user = this.getOne(queryWrapper);
+        }
         if (user == null) return null;
         List<RoleDO> roles = roleService.findByUserId(user.getId());
         user.setRoles(roles);
+        if (cache == null) {
+            redisTemplate.opsForValue().set(key, user, 1, TimeUnit.DAYS);
+        }
         return user;
     }
 
