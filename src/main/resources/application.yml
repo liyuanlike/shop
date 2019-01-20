@@ -56,8 +56,6 @@ ignored:
   urls:
   - /shop/user/expired
   - /shop/user/register
-  - /shop/user/**
-  - /shop/role/**
   - /test/**
   - /druid/**
   - /swagger-ui.html
