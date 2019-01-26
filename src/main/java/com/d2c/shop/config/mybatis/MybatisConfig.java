@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @MapperScan("com.d2c.shop.modules.*.mapper")
-public class MybatisPlusConfig {
+public class MybatisConfig {
 
     @Bean
     public PaginationInterceptor paginationInterceptor() {

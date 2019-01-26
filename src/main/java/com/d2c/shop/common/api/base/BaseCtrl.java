@@ -3,9 +3,12 @@ package com.d2c.shop.common.api.base;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.api.Assert;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.d2c.shop.common.api.ErrorCode;
+import com.d2c.shop.common.api.PageModel;
 import com.d2c.shop.common.api.Response;
+import com.d2c.shop.common.utils.QueryUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author BaiCai
  */
-public abstract class BaseCtrl<T extends IService, E extends BaseDO> {
+public abstract class BaseCtrl<S extends IService, E extends BaseDO, Q extends BaseQuery> {
 
     @Autowired
     public IService<E> service;
@@ -61,6 +64,13 @@ public abstract class BaseCtrl<T extends IService, E extends BaseDO> {
             return Response.failed(ErrorCode.FAILED);
         }
         return Response.restResult(null, ErrorCode.SUCCESS);
+    }
+
+    @ApiOperation(value = "分页查询数据")
+    @RequestMapping(value = "/select/page", method = RequestMethod.POST)
+    public R selectPage(PageModel page, Q query) throws IllegalAccessException {
+        Page<E> pager = (Page<E>) service.page(page, QueryUtil.buildWrapper(query));
+        return Response.restResult(pager, ErrorCode.SUCCESS);
     }
 
 }

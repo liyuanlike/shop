@@ -1,6 +1,5 @@
 package com.d2c.shop.modules.security.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.d2c.shop.modules.security.mapper.UserMapper;
@@ -26,8 +25,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     @Cacheable(value = "USER", key = "'findByUsername:'+#username", unless = "#result == null")
     public UserDO findByUsername(String username) {
-        Wrapper<UserDO> queryWrapper = new QueryWrapper();
-        ((QueryWrapper<UserDO>) queryWrapper).eq("username", username);
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username", username);
         UserDO user = this.getOne(queryWrapper);
         if (user == null) return null;
         List<RoleDO> roles = roleService.findByUserId(user.getId());

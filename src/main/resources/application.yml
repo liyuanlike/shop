@@ -55,7 +55,7 @@ mybatis-plus:
 ignored:
   urls:
   - /shop/user/expired
-  - /shop/user/register
+  - /shop/user/insert
   - /test/**
   - /druid/**
   - /swagger-ui.html

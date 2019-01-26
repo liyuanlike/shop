@@ -1,4 +1,4 @@
-package com.d2c.shop.common.constant;
+package com.d2c.shop.common.api.constant;
 
 /**
  * @author BaiCai
