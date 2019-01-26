@@ -2,6 +2,7 @@ package com.d2c.shop.modules.security.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.d2c.shop.common.api.base.BaseDO;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import lombok.Data;
  */
 @Data
 @TableName("sys_menu")
+@ApiModel(description = "菜单表")
 public class MenuDO extends BaseDO {
 
     @ApiModelProperty(value = "名称")
