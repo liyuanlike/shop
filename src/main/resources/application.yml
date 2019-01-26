@@ -38,14 +38,13 @@ spring:
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
   typeAliasesPackage: com.d2c.shop.modules.*.model
-  typeEnumsPackage: com.d2c.shop.modules.*.model
   global-config:
     db-config:
       id-type: id_worker
       field-strategy: not_null
       logic-delete-value: 1
       logic-not-delete-value: 0
-    sql-parser-cache: true
+    sql-parser-cache: false
   configuration:
     auto-mapping-behavior: partial
     map-underscore-to-camel-case: true

@@ -6,6 +6,7 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -25,7 +26,8 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
         Object createMan = this.getFieldValByName(FieldConstant.CREATE_MAN, metaObject);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (null == createMan && !(authentication instanceof AnonymousAuthenticationToken)) {
-            this.setFieldValByName(FieldConstant.CREATE_MAN, authentication.getPrincipal(), metaObject);
+            UserDetails user = (UserDetails) authentication.getPrincipal();
+            this.setFieldValByName(FieldConstant.CREATE_MAN, user.getUsername(), metaObject);
         }
         Object deleted = this.getFieldValByName(FieldConstant.DELETED, metaObject);
         if (null == deleted) {
@@ -40,7 +42,8 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
         Object modifyMan = this.getFieldValByName(FieldConstant.MODIFY_MAN, metaObject);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (null == modifyMan && !(authentication instanceof AnonymousAuthenticationToken)) {
-            this.setFieldValByName(FieldConstant.MODIFY_MAN, authentication.getPrincipal(), metaObject);
+            UserDetails user = (UserDetails) authentication.getPrincipal();
+            this.setFieldValByName(FieldConstant.MODIFY_MAN, user.getUsername(), metaObject);
         }
     }
 
