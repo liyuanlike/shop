@@ -19,6 +19,7 @@ public class HttpTraceLog implements Serializable {
     private String path;
     private String method;
     private Integer status;
+    private String username;
     private Long timeTaken;
     private String parameterMap;
     private String requestBody;
