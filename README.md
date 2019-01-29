@@ -621,8 +621,57 @@ public class UserQuery extends BaseQuery {
 **解释：**
 这里的Page类继承于com.baomidou.mybatisplus.extension.plugins.pagination.Page, 如果不满意可以自行实现。
 @Condition标签作用于查询类字段上，condition表示操作符，field表示数据库中的字段名，sql则为注入的查询语句。根据com.baomidou.mybatisplus.core.conditions.AbstractWrapper的代码特性，
-QueryUtil类专门构造一个QueryWrapper作为多重查询条件使用。<br>
-　　上边的代码只是一个例子，大家可以随意自己继承实现，到此为止MyBatis-Plus整合大致完成，怎么样，很酷吧!
+QueryUtil类专门构造一个QueryWrapper作为多重查询条件使用。不是每个类暴露增删改查接口都是安全的，比如User这个随意增和改就不行，怎么办？请看下边的解决方案。<br>
+
+```$xslt
+@Api(description = "用户管理")
+@RestController
+@RequestMapping("/shop/user")
+public class UserController extends BaseCtrl<UserDO, UserQuery> {
+
+    @ApiOperation(value = "登录过期")
+    @RequestMapping(value = "/expired", method = RequestMethod.GET)
+    public R expired() {
+        return Response.failed(ErrorCode.LOGIN_EXPIRED);
+    }
+
+    /**
+     * 方法签名一致，可覆盖不安全的insert
+     */
+    @Override
+    @ApiOperation(value = "用户注册")
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public R insert(@RequestBody UserDO user) {
+        Assert.notNull(ErrorCode.REQUEST_PARAM_NULL, user);
+        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        boolean success = service.save(user);
+        if (!success) {
+            return Response.failed(ErrorCode.FAILED);
+        }
+        return Response.restResult(user, ErrorCode.SUCCESS);
+    }
+
+    /**
+     * 方法签名一致，可覆盖不安全的update
+     */
+    @Override
+    @ApiOperation(value = "用户更新")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public R update(@RequestBody UserDO user) {
+        Assert.notNull(ErrorCode.REQUEST_PARAM_NULL, user);
+        user.setUsername(null);
+        user.setPassword(null);
+        boolean success = service.updateById(user);
+        if (!success) {
+            return Response.failed(ErrorCode.FAILED);
+        }
+        return Response.restResult(null, ErrorCode.SUCCESS);
+    }
+
+}
+```
+**解释：**
+上边的代码只是一个例子，大家可以随意自己继承实现，到此为止MyBatis-Plus整合大致完成，怎么样，很酷吧!
 
 ## SpringSecurity+JWT整合
 代码都是完整的，文档待续......
