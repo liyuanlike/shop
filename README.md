@@ -1,7 +1,8 @@
 # SpringBoot+MybatisPlus项目骨架
 
 　　Mall项目的单个微服务详细案例，详见代码：https://github.com/D2C-Cai/mall  
-　　SpringBoot（2.0.5）+MybatisPlus（3.0.7）项目骨架，支持SpringSecurity+JWT权限验证，整合Redis+Elasticseach，EasyPoi的Excel导出，Elasticseach请求日志收集，Swagger2接口文档，工具包Lombok/Hutool/FastJson等
+　　SpringBoot（2.0.5）+MybatisPlus（3.0.7）项目骨架，支持SpringSecurity+JWT权限验证，整合Redis+Elasticseach，EasyPoi的Excel导出，Elasticseach请求日志收集，Swagger2接口文档，工具包Lombok/Hutool/FastJson等<br>
+　　作者QQ：709931138
 
 ## 背景介绍
 　　**骨架项目的精髓：框架流行，版本要新，配置清晰，代码简洁，案例完整。依赖最小化，不拖泥带水，不自以为是。**<br>
@@ -10,8 +11,8 @@
 这里作者给出自己的一套认为比较简洁好用的方案，在下面的文档中，作者会比较详细的例举一些代码片段，并介绍给各位比较流行的开源框架，帮助大家理解流行框架的整合，帮助大家提高开发效率。
 
 ## 环境介绍
-　　此项目适用于有一定开发基础的开发者使用，项目内使用的框架和中间件都是市面上非常流行的，如何搭建环境的教程不作详细介绍，请开发者自行搭建必要的环境。<br>
-　　这里只给出几点建议：Linux服务器作者选用CentOS版本7，JDK选用1.8，MySql数据库5.6建议直接安装在系统上。一些中间件不论单机或集群请务必安装启动：Redis, Elasticsearch。<br>
+　　此项目适用于有一定开发基础的开发者使用，项目内使用的框架和中间件都是市面上非常流行的，如何搭建环境的教程不作详细介绍，请开发者自行搭建必要的环境。
+这里只给出几点建议：Linux服务器作者选用CentOS版本7，JDK选用1.8，MySql数据库5.6建议直接安装在系统上。一些中间件不论单机或集群请务必安装启动：Redis, Elasticsearch。<br>
 　　最后还会给出Docker容器中快捷安装的方案，注意容器时区，以及目录的映射，[命令只是建议，不要照抄]()！
 
 ## 版本说明
