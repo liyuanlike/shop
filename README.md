@@ -79,7 +79,7 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false    
 ```
-> 解释：上边给的配置中庸科学。具体更详细的配置建议大家参考官网文档：https://mp.baomidou.com/guide/
+**解释：**上边给的配置中庸科学。具体更详细的配置建议大家参考官网文档：https://mp.baomidou.com/guide/
 
 ```$xslt
 @Configuration
@@ -99,7 +99,7 @@ public class MybatisConfig {
 
 }
 ```
-> 解释：分页插件 PaginationInterceptor，逻辑插件 ISqlInjector
+**解释：**分页插件 PaginationInterceptor，逻辑插件 ISqlInjector
 
 ```$xslt
 public interface FieldConstant {
@@ -200,7 +200,7 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
 
 }
 ```
-> 解释：代码虽然繁琐，但逻辑很简单，BaseDO继承于com.baomidou.mybatisplus.extension.activerecord.Model，@TableXXX标签是主力，具体含义望文生义即可。表的默认字段经过配置，只要调用IService，均为自动填表，id默认分布式数形式，创建时间和修改时间均为当前时间，创建人和修改人由SpringSecurity（下面会讲）获取用户名赋值
+**解释：**代码虽然繁琐，但逻辑很简单，BaseDO继承于com.baomidou.mybatisplus.extension.activerecord.Model，@TableXXX标签是主力，具体含义望文生义即可。表的默认字段经过配置，只要调用IService，均为自动填表，id默认分布式数形式，创建时间和修改时间均为当前时间，创建人和修改人由SpringSecurity（下面会讲）获取用户名赋值
 
 ```$xslt
 @Data
@@ -246,7 +246,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
 }
 ```
-> 解释：自己的业务代码找准这些类继承即可<br>
+**解释：**自己的业务代码找准这些类继承即可<br>
 com.baomidou.mybatisplus.core.mapper.BaseMapper,<br> com.baomidou.mybatisplus.extension.service.IService, <br>com.baomidou.mybatisplus.extension.service.impl.ServiceImpl<br>
 
 ```$xslt
@@ -365,7 +365,7 @@ public class Response extends R {
 
 }
 ```
-> 解释：最基本的增删改查实现，作者选用了包里提供的案例类继承，如果不满意可以自己写response交互格式<br>
+**解释：**最基本的增删改查实现，作者选用了包里提供的案例类继承，如果不满意可以自己写response交互格式<br>
 com.baomidou.mybatisplus.extension.api.IErrorCode,<br>
 com.baomidou.mybatisplus.extension.api.R<br>
 注意：网上的例子大多到此为止，问题只解决了一半，裤子都脱了就给我看这个？<br>
@@ -611,7 +611,7 @@ public class UserQuery extends BaseQuery {
 
 }
 ```
-> 解释：这里的Page类继承于com.baomidou.mybatisplus.extension.plugins.pagination.Page, 如果不满意可以自行实现。
+**解释：**这里的Page类继承于com.baomidou.mybatisplus.extension.plugins.pagination.Page, 如果不满意可以自行实现。
 @Condition标签作用于查询类字段上，condition表示操作符，field表示数据库中的字段名，sql则为注入的查询语句。根据com.baomidou.mybatisplus.core.conditions.AbstractWrapper的代码特性，
 QueryUtil类专门构造一个QueryWrapper作为多重查询条件使用。<br>
 上边的代码只是一个例子，大家可以随意自己继承实现，到此为止MyBatis-Plus整合大致完成，怎么样，很酷吧!
