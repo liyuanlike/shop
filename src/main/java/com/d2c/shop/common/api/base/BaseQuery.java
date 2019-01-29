@@ -5,13 +5,14 @@ import com.d2c.shop.common.api.emuns.ConditionEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author BaiCai
  */
 @Data
-public abstract class BaseQuery {
+public abstract class BaseQuery implements Serializable {
 
     @Condition(condition = ConditionEnum.EQ)
     @ApiModelProperty(value = "唯一主键ID")

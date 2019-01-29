@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author BaiCai
  */
-public abstract class BaseCtrl<S extends IService, E extends BaseDO, Q extends BaseQuery> {
+public abstract class BaseCtrl<E extends BaseDO, Q extends BaseQuery> {
 
     @Autowired
     public IService<E> service;
@@ -68,7 +68,7 @@ public abstract class BaseCtrl<S extends IService, E extends BaseDO, Q extends B
 
     @ApiOperation(value = "分页查询数据")
     @RequestMapping(value = "/select/page", method = RequestMethod.POST)
-    public R selectPage(PageModel page, Q query) throws IllegalAccessException {
+    public R selectPage(PageModel page, Q query) {
         Page<E> pager = (Page<E>) service.page(page, QueryUtil.buildWrapper(query));
         return Response.restResult(pager, ErrorCode.SUCCESS);
     }

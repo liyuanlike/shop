@@ -34,11 +34,12 @@ import java.util.Objects;
 @Slf4j
 public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered {
 
-    @Autowired
-    private HttpTraceLogRepository httpTraceLogRepository;
     private static final String NEED_TRACE_PATH_PREFIX = "/shop";
+    private static final String IGNORE_TRACE_PATH = "/shop/user/expired";
     private static final String IGNORE_CONTENT_TYPE = "multipart/form-data";
     private final MeterRegistry registry;
+    @Autowired
+    private HttpTraceLogRepository httpTraceLogRepository;
 
     public HttpTraceLogFilter(MeterRegistry registry) {
         this.registry = registry;
@@ -69,7 +70,7 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
             status = response.getStatus();
         } finally {
             String path = request.getRequestURI();
-            if (path.startsWith(NEED_TRACE_PATH_PREFIX) && !Objects.equals(IGNORE_CONTENT_TYPE, request.getContentType())) {
+            if (path.startsWith(NEED_TRACE_PATH_PREFIX) && !path.equals(IGNORE_TRACE_PATH) && !Objects.equals(IGNORE_CONTENT_TYPE, request.getContentType())) {
                 // 记录日志
                 HttpTraceLog log = new HttpTraceLog();
                 log.setId(System.currentTimeMillis());

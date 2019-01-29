@@ -14,6 +14,12 @@ public class PageModel extends Page {
     private long p;
     @ApiModelProperty(value = "页长")
     private long ps;
+    // 最大页长
+    public static final long MAX_SIZE = 1000L;
+
+    public PageModel() {
+        super();
+    }
 
     public void setP(long p) {
         this.p = p;
@@ -23,10 +29,6 @@ public class PageModel extends Page {
     public void setPs(long ps) {
         this.ps = ps;
         this.setSize(ps);
-    }
-
-    public PageModel() {
-        super();
     }
 
 }

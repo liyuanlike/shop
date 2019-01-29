@@ -16,7 +16,7 @@ import java.util.List;
 public class QueryUtil {
 
     // 构建QueryWrapper
-    public static <T extends BaseQuery> QueryWrapper buildWrapper(T query) throws IllegalAccessException {
+    public static <T extends BaseQuery> QueryWrapper buildWrapper(T query) {
         QueryWrapper<Object> queryWrapper = new QueryWrapper();
         for (Field field : getAllFields(query.getClass())) {
             // 查询条件标签
@@ -27,7 +27,12 @@ public class QueryUtil {
                 key = camelToUnderline(field.getName());
             }
             // 数据库查询的值
-            Object value = field.get(query);
+            Object value = null;
+            try {
+                value = field.get(query);
+            } catch (IllegalAccessException e) {
+                break;
+            }
             Object[] array = new Object[]{};
             if (value != null && value.getClass().isArray()) {
                 array = (Object[]) value;

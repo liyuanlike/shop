@@ -4,10 +4,9 @@ import com.baomidou.mybatisplus.extension.api.Assert;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.d2c.shop.common.api.ErrorCode;
 import com.d2c.shop.common.api.Response;
-import com.d2c.shop.common.api.base.BaseCtrl;
+import com.d2c.shop.common.api.base.spec.BaseExcelCtrl;
 import com.d2c.shop.modules.security.model.UserDO;
 import com.d2c.shop.modules.security.query.UserQuery;
-import com.d2c.shop.modules.security.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(description = "用户管理")
 @RestController
 @RequestMapping("/shop/user")
-public class UserController extends BaseCtrl<UserService, UserDO, UserQuery> {
+public class UserController extends BaseExcelCtrl<UserDO, UserQuery> {
 
     @ApiOperation(value = "登录过期")
     @RequestMapping(value = "/expired", method = RequestMethod.GET)
