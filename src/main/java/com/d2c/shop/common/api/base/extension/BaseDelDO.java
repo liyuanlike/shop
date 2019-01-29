@@ -1,4 +1,4 @@
-package com.d2c.shop.common.api.base.spec;
+package com.d2c.shop.common.api.base.extension;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

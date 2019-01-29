@@ -1,4 +1,4 @@
-package com.d2c.shop.common.api.base.spec;
+package com.d2c.shop.common.api.base.extension;
 
 import cn.afterturn.easypoi.entity.vo.BigExcelConstants;
 import cn.afterturn.easypoi.excel.entity.ExportParams;

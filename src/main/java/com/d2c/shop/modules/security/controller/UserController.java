@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.api.Assert;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.d2c.shop.common.api.ErrorCode;
 import com.d2c.shop.common.api.Response;
-import com.d2c.shop.common.api.base.spec.BaseExcelCtrl;
+import com.d2c.shop.common.api.base.extension.BaseExcelCtrl;
 import com.d2c.shop.modules.security.model.UserDO;
 import com.d2c.shop.modules.security.query.UserQuery;
 import io.swagger.annotations.Api;

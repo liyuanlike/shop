@@ -3,7 +3,7 @@ package com.d2c.shop.modules.security.model;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.common.api.base.spec.BaseDelDO;
+import com.d2c.shop.common.api.base.extension.BaseDelDO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
