@@ -102,7 +102,7 @@ public class MybatisConfig {
 }
 ```
 **解释：**
-分页插件 PaginationInterceptor，逻辑插件 ISqlInjector
+分页插件 PaginationInterceptor，逻辑插件 ISqlInjector。
 
 ```$xslt
 public interface FieldConstant {
@@ -204,7 +204,7 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
 }
 ```
 **解释：**
-代码虽然繁琐，但逻辑很简单，BaseDO继承于com.baomidou.mybatisplus.extension.activerecord.Model，@TableXXX标签是主力，具体含义望文生义即可。表的默认字段经过配置，只要调用IService，均为自动填表，id默认分布式数形式，创建时间和修改时间均为当前时间，创建人和修改人由SpringSecurity（下面会讲）获取用户名赋值
+代码虽然繁琐，但逻辑很简单，BaseDO继承实现于com.baomidou.mybatisplus.extension.activerecord.Model，@TableXXX标签是主力，具体含义望文生义即可。表的默认字段经过配置，只要调用IService，均为自动填表，id默认分布式数形式，创建时间和修改时间均为当前时间，创建人和修改人由SpringSecurity（下面会讲）获取用户名赋值。
 
 ```$xslt
 @Data
@@ -251,7 +251,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 }
 ```
 **解释：**
-自己的业务代码找准这些类继承即可<br>
+自己的业务代码找准这些类继承实现即可<br>
 com.baomidou.mybatisplus.core.mapper.BaseMapper,<br> com.baomidou.mybatisplus.extension.service.IService, <br>com.baomidou.mybatisplus.extension.service.impl.ServiceImpl<br>
 
 ```$xslt
@@ -371,7 +371,7 @@ public class Response extends R {
 }
 ```
 **解释：**
-最基本的增删改查实现，作者选用了包里提供的案例类继承，如果不满意可以自己写response交互格式<br>
+最基本的增删改查实现，作者选用了包里提供的案例类继承实现，如果不满意可以自己写response交互格式<br>
 com.baomidou.mybatisplus.extension.api.IErrorCode,<br>
 com.baomidou.mybatisplus.extension.api.R<br>
 **注意：**
@@ -619,7 +619,7 @@ public class UserQuery extends BaseQuery {
 }
 ```
 **解释：**
-这里的Page类继承于com.baomidou.mybatisplus.extension.plugins.pagination.Page, 如果不满意可以自行实现。
+这里的Page类继承实现于com.baomidou.mybatisplus.extension.plugins.pagination.Page, 如果不满意可以自行实现。
 @Condition标签作用于查询类字段上，condition表示操作符，field表示数据库中的字段名，sql则为注入的查询语句。根据com.baomidou.mybatisplus.core.conditions.AbstractWrapper的代码特性，
 QueryUtil类专门构造一个QueryWrapper作为多重查询条件使用。
 **不是每个类暴露增删改查接口都是安全的，比如User这个随意增和改就不行，怎么办？**
@@ -676,4 +676,561 @@ public class UserController extends BaseCtrl<UserDO, UserQuery> {
 上边的代码只是一个例子，大家可以随意自己继承实现，到此为止MyBatis-Plus整合大致完成，怎么样，很酷吧!
 
 ## SpringSecurity+JWT整合
-代码都是完整的，文档待续......
+　　Spring Security是一个能够为基于Spring的企业应用系统提供声明式的安全访问控制解决方案的安全框架。JSON Web Token（JWT）是目前最流行的跨域身份验证解决方案。<br>
+　　我们用SpringSecurity+JWT来解决管理端的权限问题，URL级和按钮级无非是对资源的定义不同而已，此方案能应对各种ajax前端框架。
+```
+@Data
+@TableName("sys_user")
+@ApiModel(description = "用户表")
+public class UserDO extends BaseDelDO {
+
+    @ApiModelProperty(value = "账号")
+    private String username;
+    @ApiModelProperty(value = "密码")
+    private String password;
+    @ApiModelProperty(value = "状态")
+    private Integer status;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "用户拥有的角色")
+    private List<RoleDO> roles = new ArrayList<>();
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+}
+```
+```
+@Data
+@TableName("sys_role")
+@ApiModel(description = "角色表")
+public class RoleDO extends BaseDO {
+
+    @ApiModelProperty(value = "ROLE_开头")
+    private String code;
+    @ApiModelProperty(value = "名称")
+    private String name;
+
+}
+```
+```
+@Data
+@TableName("sys_menu")
+@ApiModel(description = "菜单表")
+public class MenuDO extends BaseDO {
+
+    @ApiModelProperty(value = "名称")
+    private String name;
+    @ApiModelProperty(value = "路径")
+    private String path;
+    @ApiModelProperty(value = "类型")
+    private Integer type;
+    @ApiModelProperty(value = "父级ID")
+    private Long parentId;
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
+
+    public enum TypeEnum {
+        DIR, MENU, BUTTON
+    }
+
+}
+```
+```
+@Data
+@TableName("sys_user_role")
+@ApiModel(description = "用户角色关系表")
+public class UserRoleDO extends BaseDO {
+
+    @ApiModelProperty(value = "用户ID")
+    private Long userId;
+    @ApiModelProperty(value = "角色ID")
+    private Long roleId;
+
+}
+```
+```
+@Data
+@TableName("sys_role_menu")
+@ApiModel(description = "角色菜单关系表")
+public class RoleMenuDO extends BaseDO {
+
+    @ApiModelProperty(value = "角色ID")
+    private Long roleId;
+    @ApiModelProperty(value = "菜单ID")
+    private Long menuId;
+
+}
+```
+**解释：**
+Spring Security包含认证（authentication）和授权（authorization）两大部分。权限逻辑最经典最简单的就是上边给出的例子，五表逻辑，User的Role的集合与Menu的Role的集合取交集，从而决定是否放行。
+
+```
+public class SecurityUserDetails extends UserDO implements UserDetails {
+
+    public SecurityUserDetails(UserDO user) {
+        if (user != null) {
+            this.setUsername(user.getUsername());
+            this.setPassword(user.getPassword());
+            this.setStatus(user.getStatus());
+            this.setRoles(user.getRoles());
+        }
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        List<RoleDO> roles = this.getRoles();
+        if (roles != null && roles.size() > 0) {
+            roles.forEach(item -> {
+                if (StrUtil.isNotBlank(item.getCode())) {
+                    authorityList.add(new SimpleGrantedAuthority(item.getCode()));
+                }
+            });
+        }
+        return authorityList;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.getStatus() == 1;
+    }
+
+}
+```
+```
+@Component
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        UserDO user = userService.findByUsername(s);
+        if (user == null) {
+            throw new UsernameNotFoundException("该账号不存在，请重新确认");
+        }
+        return new SecurityUserDetails(user);
+    }
+
+}
+```
+```
+@Service
+public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
+
+    @Autowired
+    private RoleService roleService;
+
+    @Override
+    @Cacheable(value = "USER", key = "'findByUsername:'+#username", unless = "#result == null")
+    public UserDO findByUsername(String username) {
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username", username);
+        UserDO user = this.getOne(queryWrapper);
+        if (user == null) return null;
+        List<RoleDO> roles = roleService.findByUserId(user.getId());
+        user.setRoles(roles);
+        return user;
+    }
+
+}
+```
+**解释：**
+这里继承实现于org.springframework.security.core.userdetails.UserDetails和org.springframework.security.core.userdetails.UserDetailsService,
+通过组合类SecurityUserDetails把我们自己的User和SpringSecurity的UserDetails串起来，注意这里loadUserByUsername()方法返回的接口是包含了Role的集合的，并不是单单的UserDO，getAuthorities()方法需要Role的集合来填充返回值，
+并且将这个数据存于Redis，为了提高鉴权性能，逻辑后续会解释。
+
+```
+@Component
+public class MySecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+
+    /**
+     * 内存中存储权限表中所有操作请求权限
+     */
+    private static Map<String, Collection<ConfigAttribute>> map = null;
+    @Autowired
+    private MenuService menuService;
+    @Autowired
+    private RoleService roleService;
+
+    @PostConstruct
+    public void loadDataSource() {
+        map = new ConcurrentHashMap<>();
+        List<MenuDO> menus = menuService.list();
+        for (MenuDO menu : menus) {
+            List<RoleDO> roles = roleService.findByMenuId(menu.getId());
+            List<ConfigAttribute> configAttributes = new ArrayList<>();
+            if (roles != null && roles.size() > 0) {
+                roles.forEach(item -> {
+                    if (StrUtil.isNotBlank(item.getCode())) {
+                        configAttributes.add(new SecurityConfig(item.getCode()));
+                    }
+                });
+            }
+            map.put(menu.getPath(), configAttributes);
+        }
+    }
+
+    @Override
+    public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
+        if (map == null) this.loadDataSource();
+        String url = ((FilterInvocation) o).getRequestUrl();
+        PathMatcher pathMatcher = new AntPathMatcher();
+        Iterator<String> iterator = map.keySet().iterator();
+        while (iterator.hasNext()) {
+            String path = iterator.next();
+            if (pathMatcher.match(path, url)) {
+                return map.get(path);
+            }
+        }
+        // 未设置操作请求权限，返回空集合
+        return null;
+    }
+
+    @Override
+    public Collection<ConfigAttribute> getAllConfigAttributes() {
+        return null;
+    }
+
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return true;
+    }
+
+}
+```
+```
+@Component
+public class MyAccessDecisionManager implements AccessDecisionManager {
+
+    @Override
+    public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
+        // 未设置操作请求权限，返回空集合，则默认放行
+        if (collection == null) return;
+        Iterator<ConfigAttribute> iterator = collection.iterator();
+        while (iterator.hasNext()) {
+            ConfigAttribute c = iterator.next();
+            String needRole = c.getAttribute();
+            for (GrantedAuthority ga : authentication.getAuthorities()) {
+                if (needRole.trim().equals(ga.getAuthority())) {
+                    return;
+                }
+            }
+        }
+        throw new AccessDeniedException("抱歉，您没有访问权限");
+    }
+
+    @Override
+    public boolean supports(ConfigAttribute configAttribute) {
+        return true;
+    }
+
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return true;
+    }
+
+}
+```
+```
+@Component
+public class MyFilterSecurityInterceptor extends AbstractSecurityInterceptor implements Filter {
+
+    @Autowired
+    private MySecurityMetadataSource securityMetadataSource;
+
+    @Autowired
+    public void setMyAccessDecisionManager(MyAccessDecisionManager myAccessDecisionManager) {
+        super.setAccessDecisionManager(myAccessDecisionManager);
+    }
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        FilterInvocation fi = new FilterInvocation(servletRequest, servletResponse, filterChain);
+        InterceptorStatusToken token = super.beforeInvocation(fi);
+        try {
+            fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
+        } finally {
+            super.afterInvocation(token, null);
+        }
+    }
+
+    @Override
+    public void destroy() {
+    }
+
+    @Override
+    public Class<?> getSecureObjectClass() {
+        return FilterInvocation.class;
+    }
+
+    @Override
+    public SecurityMetadataSource obtainSecurityMetadataSource() {
+        return securityMetadataSource;
+    }
+
+}
+```
+**解释：**
+这里的代码可以说是授权部分最核心的逻辑了。<br>
+MySecurityMetadataSource继承实现于org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource，
+那我们定义了什么样的元数据结构呢？就是数据库表里所有Menu，并且每个Menu带着自己的Role的集合。这么一个大的数据量，这里为了提升性能，getAllConfigAttributes()并不实现，而是自己用一个ConcurrentHashMap，
+启动时候从数据库取一次后在内存里存起来。getAttributes(Object o)就是返回这次请求的Menu的Role的集合，Menu虽然这么起名，可以表示目录、链接、按钮，就看你如何定义。<br>
+MyAccessDecisionManager继承实现于com.d2c.shop.config.security.authorization.AccessDecisionManager，decide()方法就是我们上边提到的逻辑，User的Role的集合与Menu的Role的集合取交集，这里是匹配就放行。
+还有一个问题不知家注意没有，未设置操作请求权限，返回空集合，则默认放行。这样的设计有好处也有坏处，我们知道菜单和按钮等一些元件需要在Menu表定义，那势必数据量会比较多，当项目比较大的时候又要做到灵活，
+定义会比较麻烦，采用这种方案表示，若Menu表里未定义的资源，只要在登录状态下，即认证后，就可以直接获得权限。换句话说就是我只要定义需要区分权限的部分，数据量会大大减小，不必每次增加需求时候又要忙着加Menu表中的资源，
+至于有何坏处，读者自己想吧。<br>
+MyFilterSecurityInterceptor继承实现于org.springframework.security.access.intercept.AbstractSecurityInterceptor，主要作用就是
+把我们刚才定义的MySecurityMetadataSource，MyAccessDecisionManager注入进去，拦截器串起来完成我们的鉴权逻辑。
+
+```
+@Component
+public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
+            Response.out(response, Response.failed(ErrorCode.SERVER_EXCEPTION, "账号或密码错误"));
+        } else if (exception instanceof DisabledException) {
+            Response.out(response, Response.failed(ErrorCode.SERVER_EXCEPTION, "账号被禁用"));
+        } else {
+            Response.out(response, Response.failed(ErrorCode.SERVER_EXCEPTION));
+        }
+    }
+
+}
+```
+```
+@Component
+public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
+        UserDetails loginUser = (UserDetails) authentication.getPrincipal();
+        String username = loginUser.getUsername();
+        List<GrantedAuthority> authorities = (List<GrantedAuthority>) loginUser.getAuthorities();
+        List<String> list = new ArrayList<>();
+        authorities.forEach(item -> list.add(item.getAuthority()));
+        // JWT登录成功生成token
+        String token = SecurityConstant.TOKEN_PREFIX + Jwts.builder()
+                .setSubject(username)
+                .claim(SecurityConstant.AUTHORITIES, JSONUtil.parse(list))
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000))
+                .signWith(SignatureAlgorithm.HS512, SecurityConstant.JWT_SIGN_KEY)
+                .compact();
+        Response.out(response, Response.restResult(token, ErrorCode.SUCCESS));
+    }
+
+}
+```
+```
+@Component
+public class RestAccessDeniedHandler implements AccessDeniedHandler {
+
+    @Override
+    public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
+        Response.out(httpServletResponse, Response.failed(ErrorCode.ACCESS_DENIED));
+    }
+
+}
+```
+```
+@Slf4j
+public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
+
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+        super(authenticationManager);
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        String accessToken = request.getHeader(SecurityConstant.ACCESS_TOKEN);
+        if (StrUtil.isNotBlank(accessToken)) {
+            UsernamePasswordAuthenticationToken authentication = getAuthentication(accessToken, response);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        chain.doFilter(request, response);
+    }
+
+    private UsernamePasswordAuthenticationToken getAuthentication(String accessToken, HttpServletResponse response) {
+        try {
+            // JWT解析token
+            Claims claims = Jwts.parser()
+                    .setSigningKey(SecurityConstant.JWT_SIGN_KEY)
+                    .parseClaimsJws(accessToken.replace(SecurityConstant.TOKEN_PREFIX, ""))
+                    .getBody();
+            String username = claims.getSubject();
+            if (StrUtil.isNotBlank(username)) {
+                UserDO user = SpringUtil.getBean(UserServiceImpl.class).findByUsername(username);
+                SecurityUserDetails securityUserDetail = new SecurityUserDetails(user);
+                User principal = new User(username, "", securityUserDetail.getAuthorities());
+                return new UsernamePasswordAuthenticationToken(principal, null, securityUserDetail.getAuthorities());
+            }
+        } catch (ExpiredJwtException e) {
+            Response.failed(ErrorCode.LOGIN_EXPIRED);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            Response.failed(ErrorCode.SERVER_EXCEPTION, "accessToken解析错误");
+        }
+        return null;
+    }
+
+}
+```
+```
+public interface SecurityConstant {
+
+    /**
+     * token分割
+     */
+    String TOKEN_PREFIX = "D2C-";
+    /**
+     * JWT签名加密key
+     */
+    String JWT_SIGN_KEY = DigestUtil.md5Hex("shop");
+    /**
+     * token参数头
+     */
+    String ACCESS_TOKEN = "accessToken";
+    /**
+     * author参数头
+     */
+    String AUTHORITIES = "authorities";
+
+}
+```
+**解释：**
+XXXXHandler都是对于成功和失败的处理类，实现了方法以Json形式返回数据。继承实现于org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler,
+org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler, org.springframework.security.web.access.AccessDeniedHandler。<br>
+注意这里我们引入了JWT作为Token处理的工具。AuthenticationSuccessHandler成功后组装一个accessToken返回给前端，以后前端每次请求head里都带上accessToken，由JWTAuthenticationFilter解析accessToken来过滤请求。
+JWTAuthenticationFilter继承实现于org.springframework.security.web.authentication.www.BasicAuthenticationFilter，这里我们首先会验证accessToken是否超时，若超时则按失败处理，若没有超时
+则将accessToken中的用户名取值，然后去Redis里和数据库里获取该用户对应的权限数据，不管是否能取到值，直接新起一个SecurityUserDetails覆盖内存中的权限数据，鉴权结果直接丢给上边实现的SpringSecurity几个核心类去处理。
+这里使用这种方式主要是为了当部署多个服务器时，用户权限数据由公共资源Redis和数据库持久化保存，在量级较小的情形下解决了同步性的问题。当然JWT还有种方案是直接将权限数据加密于accessToken内，
+服务端直接根据accessToken来鉴权，完全依赖于客户端存储，并再生成一个refreshToken用户刷新accessToken，此种方案在权限数据同步上比较复杂，适合量级比较大的情形，读者可以自行选择实现。
+
+```
+@Data
+@Configuration
+@ConfigurationProperties(prefix = "ignored")
+public class IgnoreUrlsConfig {
+
+    private List<String> urls = new ArrayList<>();
+
+}
+```
+```
+# ignored-urls
+ignored:
+  urls:
+  - /shop/user/expired
+  - /shop/user/insert
+  - /test/**
+  - /druid/**
+  - /swagger-ui.html
+  - /swagger-resources/**
+  - /swagger/**
+  - /**/v2/api-docs
+  - /**/*.js
+  - /**/*.css
+  - /**/*.png
+  - /**/*.ico
+```
+```
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private IgnoreUrlsConfig ignoreUrlsConfig;
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    private RestAccessDeniedHandler restAccessDeniedHandler;
+    @Autowired
+    private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http
+                .authorizeRequests();
+        for (String url : ignoreUrlsConfig.getUrls()) {
+            registry.antMatchers(url).permitAll();
+        }
+        registry.and()
+                // 表单登录方式
+                .formLogin()
+                .loginPage("/shop/user/expired")
+                .loginProcessingUrl("/shop/user/login")
+                .permitAll()
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+                // 默认登出方式
+                .and()
+                .logout()
+                .permitAll()
+                // 任何请求需要身份认证
+                .and()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                // 关闭跨站请求防护
+                .and()
+                .csrf()
+                .disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                // 自定义权限拒绝处理类
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(restAccessDeniedHandler)
+                // 自定义权限拦截器JWT过滤器
+                .and()
+                .addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class)
+                .addFilter(new JWTAuthenticationFilter(authenticationManager()));
+    }
+
+}
+```
+**解释：**
+最后我们一气呵成，把我们上边做的所有工作，都注入到WebSecurityConfig中，BCryptPasswordEncoder()实现Spring的PasswordEncoder接口使用BCrypt强哈希方法来加密密码，动态加盐每次加密的结果都不同。
+IgnoreUrlsConfig自定义一些不需要鉴权的url，例如我们的文档swagger路径，和默认登录过期地址/shop/user/expired和用户注册地址/shop/user/insert，到此为止我们权限的工作基本已完成，怎么样，很酷吧!
+
+## EasyPoi极简Excel工具整合
+
+代码是完整的，文档待续......
