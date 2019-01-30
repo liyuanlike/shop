@@ -679,6 +679,21 @@ public class UserController extends BaseCtrl<UserDO, UserQuery> {
 　　Spring Security是一个能够为基于Spring的企业应用系统提供声明式的安全访问控制解决方案的安全框架。JSON Web Token（JWT）是目前最流行的跨域身份验证解决方案。<br>
 　　我们用SpringSecurity+JWT来解决管理端的权限问题，URL级和按钮级无非是对资源的定义不同而已，此方案能应对各种ajax前端框架。
 ```
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+        </dependency>                
+```
+```
 @Data
 @TableName("sys_user")
 @ApiModel(description = "用户表")
@@ -1004,7 +1019,7 @@ MySecurityMetadataSource继承实现于org.springframework.security.web.access.i
 那我们定义了什么样的元数据结构呢？就是数据库表里所有Menu，并且每个Menu带着自己的Role的集合。这么一个大的数据量，这里为了提升性能，getAllConfigAttributes()并不实现，而是自己用一个ConcurrentHashMap，
 启动时候从数据库取一次后在内存里存起来。getAttributes(Object o)就是返回这次请求的Menu的Role的集合，Menu虽然这么起名，可以表示目录、链接、按钮，就看你如何定义。<br>
 MyAccessDecisionManager继承实现于com.d2c.shop.config.security.authorization.AccessDecisionManager，decide()方法就是我们上边提到的逻辑，User的Role的集合与Menu的Role的集合取交集，这里是匹配就放行。
-还有一个问题不知家注意没有，未设置操作请求权限，返回空集合，则默认放行。这样的设计有好处也有坏处，我们知道菜单和按钮等一些元件需要在Menu表定义，那势必数据量会比较多，当项目比较大的时候又要做到灵活，
+还有一个问题不知大家注意没有，未设置操作请求权限，返回空集合，则默认放行。这样的设计有好处也有坏处，我们知道菜单和按钮等一些元件需要在Menu表定义，那势必数据量会比较多，当项目比较大的时候又要做到灵活，
 定义会比较麻烦，采用这种方案表示，若Menu表里未定义的资源，只要在登录状态下，即认证后，就可以直接获得权限。换句话说就是我只要定义需要区分权限的部分，数据量会大大减小，不必每次增加需求时候又要忙着加Menu表中的资源，
 至于有何坏处，读者自己想吧。<br>
 MyFilterSecurityInterceptor继承实现于org.springframework.security.access.intercept.AbstractSecurityInterceptor，主要作用就是
@@ -1128,7 +1143,7 @@ public interface SecurityConstant {
 ```
 **解释：**
 XXXXHandler都是对于成功和失败的处理类，实现了方法以Json形式返回数据。继承实现于org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler,
-org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler, org.springframework.security.web.access.AccessDeniedHandler。<br>
+org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler, org.springframework.security.web.access.AccessDeniedHandler<br>
 注意这里我们引入了JWT作为Token处理的工具。AuthenticationSuccessHandler成功后组装一个accessToken返回给前端，以后前端每次请求head里都带上accessToken，由JWTAuthenticationFilter解析accessToken来过滤请求。
 JWTAuthenticationFilter继承实现于org.springframework.security.web.authentication.www.BasicAuthenticationFilter，这里我们首先会验证accessToken是否超时，若超时则按失败处理，若没有超时
 则将accessToken中的用户名取值，然后去Redis里和数据库里获取该用户对应的权限数据，不管是否能取到值，直接新起一个SecurityUserDetails覆盖内存中的权限数据，鉴权结果直接丢给上边实现的SpringSecurity几个核心类去处理。
@@ -1229,7 +1244,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ```
 **解释：**
 最后我们一气呵成，把我们上边做的所有工作，都注入到WebSecurityConfig中，BCryptPasswordEncoder()实现Spring的PasswordEncoder接口使用BCrypt强哈希方法来加密密码，动态加盐每次加密的结果都不同。
-IgnoreUrlsConfig自定义一些不需要鉴权的url，例如我们的文档swagger路径，和默认登录过期地址/shop/user/expired和用户注册地址/shop/user/insert，到此为止我们权限的工作基本已完成，怎么样，很酷吧!
+IgnoreUrlsConfig自定义一些不需要鉴权的url，例如我们的文档swagger路径，和默认登录过期地址/shop/user/expired和用户注册地址/shop/user/insert，到此为止我们权限的工作基本已完成，
+还差登陆后动态菜单，和几个表数据的增删改查，这些就是写个业务，这里不做演示了，怎么样，很酷吧!
 
 ## EasyPoi极简Excel工具整合
 
