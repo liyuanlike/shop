@@ -5,17 +5,20 @@
 　　作者QQ：[709931138]() 作者邮箱：[709931138@qq.com]()
 
 ## 背景介绍
+
 　　**骨架项目的精髓：框架流行，版本要新，配置清晰，代码简洁，案例完整。依赖最小化，不拖泥带水，不自以为是。**<br>
 
 　　在日常的开发过程中，相信大部分同志的痛点并不在业务开发上，而是在寻求一些比较舒适的开发框架，帮助自己提升开发效率。直接把开源框架拿来用，感觉还是有点卡手，直接用代码生成器自动生成代码，出来的代码既繁琐又比较笨重。
 这里作者给出自己的一套认为比较简洁好用的方案，在下面的文档中，作者会比较详细的例举一些代码片段，并介绍给各位比较流行的开源框架，帮助大家理解流行框架的整合，帮助大家提高开发效率。
 
 ## 环境介绍
+
 　　此项目适用于有一定开发基础的开发者使用，项目内使用的框架和中间件都是市面上非常流行的，如何搭建环境的教程不作详细介绍，请开发者自行搭建必要的环境。
 这里只给出几点建议：Linux服务器作者选用CentOS版本7，JDK选用1.8，MySql数据库5.6建议直接安装在系统上。一些中间件不论单机或集群请务必安装启动：Redis, Elasticsearch。<br>
 　　最后还会给出Docker容器中快捷安装的方案，注意容器时区，以及目录的映射，[命令只是建议，不要照抄]()！
 
 ## 版本说明
+
 | 名称 | 版本 |
 | ---- | ---- |
 | SpringBoot | 2.0.5 |
@@ -32,9 +35,10 @@
 | Jasypt | 2.1.0 |
 
 ## MybatisPlus整合
+
 　　MyBatis-Plus 荣获【2018年度开源中国最受欢迎的中国软件】TOP5，为简化开发而生。润物无声，效率至上，功能丰富。官网：https://mp.baomidou.com/
 
-```$xslt
+```
         <!-- MybatisPlus -->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -54,7 +58,7 @@
             <version>5.1.44</version>
         </dependency>
 ```
-```$xslt
+```
 # spring
 spring:
   datasource:
@@ -83,7 +87,7 @@ mybatis-plus:
 **解释：**
 上边给的配置中庸科学。具体更详细的配置建议大家参考官网文档：https://mp.baomidou.com/guide/
 
-```$xslt
+```
 @Configuration
 @EnableTransactionManagement
 @MapperScan("com.d2c.shop.modules.*.mapper")
@@ -104,7 +108,7 @@ public class MybatisConfig {
 **解释：**
 分页插件 PaginationInterceptor，逻辑插件 ISqlInjector。
 
-```$xslt
+```
 public interface FieldConstant {
 
     /**
@@ -134,7 +138,7 @@ public interface FieldConstant {
 
 }
 ```
-```$xslt
+```
 @Data
 public abstract class BaseDO extends Model {
 
@@ -156,7 +160,7 @@ public abstract class BaseDO extends Model {
 
 }
 ```
-```$xslt
+```
 @Data
 public abstract class BaseDelDO extends BaseDO {
 
@@ -167,7 +171,7 @@ public abstract class BaseDelDO extends BaseDO {
 
 }
 ```
-```$xslt
+```
 @Component
 public class ModelMetaObjectHandler implements MetaObjectHandler {
 
@@ -206,7 +210,7 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
 **解释：**
 代码虽然繁琐，但逻辑很简单，BaseDO继承实现于com.baomidou.mybatisplus.extension.activerecord.Model，@TableXXX标签是主力，具体含义望文生义即可。表的默认字段经过配置，只要调用IService，均为自动填表，id默认分布式数形式，创建时间和修改时间均为当前时间，创建人和修改人由SpringSecurity（下面会讲）获取用户名赋值。
 
-```$xslt
+```
 @Data
 @TableName("sys_user")
 @ApiModel(description = "用户表")
@@ -234,17 +238,17 @@ public class UserDO extends BaseDelDO {
 
 }
 ```
-```$xslt
+```
 public interface UserMapper extends BaseMapper<UserDO> {
 
 }
 ```
-```$xslt
+```
 public interface UserService extends IService<UserDO> {
 
 }
 ```
-```$xslt
+```
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
 
@@ -254,7 +258,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 自己的业务代码找准这些类继承实现即可<br>
 com.baomidou.mybatisplus.core.mapper.BaseMapper,<br> com.baomidou.mybatisplus.extension.service.IService, <br>com.baomidou.mybatisplus.extension.service.impl.ServiceImpl<br>
 
-```$xslt
+```
 public abstract class BaseCtrl<E extends BaseDO, Q extends BaseQuery> {
 
     @Autowired
@@ -311,7 +315,7 @@ public abstract class BaseCtrl<E extends BaseDO, Q extends BaseQuery> {
 
 }
 ```
-```$xslt
+```
 public enum ErrorCode implements IErrorCode {
     //
     SUCCESS(1, "操作成功"),
@@ -341,7 +345,7 @@ public enum ErrorCode implements IErrorCode {
     }
 }
 ```
-```$xslt
+```
 @Slf4j
 public class Response extends R {
 
@@ -371,14 +375,12 @@ public class Response extends R {
 }
 ```
 **解释：**
-最基本的增删改查实现，作者选用了包里提供的案例类继承实现，如果不满意可以自己写response交互格式<br>
-com.baomidou.mybatisplus.extension.api.IErrorCode,<br>
-com.baomidou.mybatisplus.extension.api.R<br>
+最基本的增删改查实现，作者选用了包里提供的案例类继承实现于com.baomidou.mybatisplus.extension.api.IErrorCode，com.baomidou.mybatisplus.extension.api.R，如果不满意可以自己写response交互格式。<br>
 **注意：**
 **网上的例子大多到此为止，问题只解决了一半，裤子都脱了就给我看这个？<br>**
 真正最能省时间的分页实现在下边给出。
 
-```$xslt
+```
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface Condition {
@@ -391,7 +393,7 @@ public @interface Condition {
 
 }
 ```
-```$xslt
+```
 public enum ConditionEnum {
     //
     EQ("等于="),
@@ -417,7 +419,7 @@ public enum ConditionEnum {
 }
 
 ```
-```$xslt
+```
 public class QueryUtil {
 
     // 构建QueryWrapper
@@ -556,7 +558,7 @@ public class QueryUtil {
 
 }
 ```
-```$xslt
+```
 @Data
 public class PageModel extends Page {
 
@@ -583,7 +585,7 @@ public class PageModel extends Page {
 
 }
 ```
-```$xslt
+```
 @Data
 public abstract class BaseQuery implements Serializable {
 
@@ -605,7 +607,7 @@ public abstract class BaseQuery implements Serializable {
 
 }
 ```
-```$xslt
+```
 @Data
 public class UserQuery extends BaseQuery {
 
@@ -625,7 +627,7 @@ QueryUtil类专门构造一个QueryWrapper作为多重查询条件使用。
 **不是每个类暴露增删改查接口都是安全的，比如User这个随意增和改就不行，怎么办？**
 请看下边的解决方案。<br>
 
-```$xslt
+```
 @Api(description = "用户管理")
 @RestController
 @RequestMapping("/shop/user")
@@ -679,14 +681,17 @@ public class UserController extends BaseCtrl<UserDO, UserQuery> {
 　　Spring Security是一个能够为基于Spring的企业应用系统提供声明式的安全访问控制解决方案的安全框架。JSON Web Token（JWT）是目前最流行的跨域身份验证解决方案。<br>
 　　我们用SpringSecurity+JWT来解决管理端的权限问题，URL级和按钮级无非是对资源的定义不同而已，此方案能应对各种ajax前端框架。
 ```
+        <!-- Spring MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <!-- JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
@@ -1249,4 +1254,120 @@ IgnoreUrlsConfig自定义一些不需要鉴权的url，例如我们的文档swag
 
 ## EasyPoi极简Excel工具整合
 
-代码是完整的，文档待续......
+　　EasyPoi功能如同名字easy，主打的功能就是容易，让一个没见接触过poi的人员
+就可以方便的写出Excel导出，Excel模板导出，Excel导入，Word模板导出，通过简单的注解和模板
+语言，完成以前复杂的写法。
+
+```
+        <!-- EasyPoi Excel -->
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-base</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-web</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-annotation</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+```
+**解释：**
+EasyPoi这个工具功能非常强大，这里只做每个列表控制器自动附带一个导出功能，具体还是请参考官网：http://easypoi.mydoc.io/
+
+```
+@Data
+public abstract class BaseDO extends Model {
+
+    @ApiModelProperty(value = "唯一主键ID")
+    private Long id;
+    @Excel(name = "创建时间", format = "yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "创建时间")
+    private Date createDate;
+    @ApiModelProperty(value = "创建用户")
+    private String createMan;
+    @ApiModelProperty(value = "修改时间")
+    private Date modifyDate;
+    @ApiModelProperty(value = "修改用户")
+    private String modifyMan;
+
+}
+```
+```
+@Data
+@TableName("sys_user")
+@ApiModel(description = "用户表")
+public class UserDO extends BaseDelDO {
+
+    @Excel(name = "账号")
+    @ApiModelProperty(value = "账号")
+    private String username;
+    @ApiModelProperty(value = "密码")
+    private String password;
+    @Excel(name = "状态", replace = {"正常_1", "禁用_0"})
+    @ApiModelProperty(value = "状态")
+    private Integer status;
+    @ApiModelProperty(value = "用户拥有的角色")
+    private List<RoleDO> roles = new ArrayList<>();
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+}
+```
+**解释：**
+在这里，大家主要关注 @Excel的用法就行，format是导出时间格式设置，replace表示数据值和输出值转换，当然有更多更复杂的用法参考官方文档。
+
+```
+public abstract class BaseExcelCtrl<E extends BaseDO, Q extends BaseQuery> extends BaseCtrl<E, Q> implements IExcelExportServer {
+
+    @Autowired
+    public BaseExcelCtrl<E, Q> excelExportServer;
+
+    @Override
+    public List<Object> selectListForExcelExport(Object o, int i) {
+        Q query = (Q) o;
+        Page page = new Page(i, PageModel.MAX_SIZE, false);
+        List<E> list = service.page(page, QueryUtil.buildWrapper(query)).getRecords();
+        List<Object> result = new ArrayList<>();
+        result.addAll(list);
+        return result;
+    }
+
+    @ApiOperation(value = "分页导出数据")
+    @RequestMapping(value = "/excel/page", method = RequestMethod.GET)
+    public R excelPage(PageModel page, Q query, ModelMap map, HttpServletRequest request,
+                       HttpServletResponse response) {
+        ExportParams params = new ExportParams("excel数据表", "sheet", ExcelType.XSSF);
+        map.put(BigExcelConstants.CLASS, ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+        map.put(BigExcelConstants.PARAMS, params);
+        map.put(BigExcelConstants.DATA_PARAMS, query);
+        map.put(BigExcelConstants.DATA_INTER, excelExportServer);
+        PoiBaseView.render(map, request, response, BigExcelConstants.EASYPOI_BIG_EXCEL_VIEW);
+        return Response.restResult(null, ErrorCode.SUCCESS);
+    }
+
+}
+```
+**解释：**
+这里扩展一下我们原先的BaseCtrl，附加一个分页导出数据的方法，解释下具体的代码含义。
+继承实现cn.afterturn.easypoi.handler.inter.IExcelExportServer的selectListForExcelExport(Object var1, int var2)方法，其实就是让我们实现分页拉取数据的方法，
+第一个参数表示查询参数的封装，第二个字段则表示页码。注意在用MybatisPlus的时候分页这个定义 Page page = new Page(i, PageModel.MAX_SIZE, false)的false，这个非常重要，表示不必每页拉数据的时候count全表，大大提升分页拉取数据的效率。
+ExportParams第一个参数表示表头名（不是文件名），第二个表示sheet表名。ModelMap里丢的几个参数，BigExcelConstants.CLASS表示具体每行对应的POJO对象，这里我们用DO对象，
+BigExcelConstants.PARAMS就是ExportParams，BigExcelConstants.DATA_PARAMS这个是Object型的数据查询参数，对应到selectListForExcelExport第一个参数，这里我们是封装的Query对象，
+BigExcelConstants.DATA_INTER这个是具体实现IExcelExportServer类的对象。至此，只要继承了BaseExcelCtrl的控制器，自动附带一个分页导出Excel的请求功能，怎么样，很酷吧!
+
+## ElasticSearch收集请求日志整合
+
+代码是完整，文档待续......
