@@ -2,7 +2,7 @@
 
 　　Mall项目的单个微服务详细案例，详见代码：https://github.com/D2C-Cai/mall  
 　　SpringBoot（2.0.5）+MybatisPlus（3.0.7）项目骨架，支持SpringSecurity+JWT权限验证，整合Redis+Elasticseach，EasyPoi的Excel导出，Elasticseach请求日志收集，Swagger2接口文档，工具包Lombok/Hutool/FastJson等<br>
-　　作者QQ：[709931138]()
+　　作者QQ：[709931138]() 作者邮箱：[709931138@qq.com]()
 
 ## 背景介绍
 　　**骨架项目的精髓：框架流行，版本要新，配置清晰，代码简洁，案例完整。依赖最小化，不拖泥带水，不自以为是。**<br>
@@ -374,9 +374,9 @@ public class Response extends R {
 最基本的增删改查实现，作者选用了包里提供的案例类继承，如果不满意可以自己写response交互格式<br>
 com.baomidou.mybatisplus.extension.api.IErrorCode,<br>
 com.baomidou.mybatisplus.extension.api.R<br>
-**注意：
-网上的例子大多到此为止，问题只解决了一半，裤子都脱了就给我看这个？<br>
-真正最能省时间的分页实现在下边给出。**
+**注意：**
+**网上的例子大多到此为止，问题只解决了一半，裤子都脱了就给我看这个？<br>**
+真正最能省时间的分页实现在下边给出。
 
 ```$xslt
 @Target(FIELD)
@@ -621,7 +621,9 @@ public class UserQuery extends BaseQuery {
 **解释：**
 这里的Page类继承于com.baomidou.mybatisplus.extension.plugins.pagination.Page, 如果不满意可以自行实现。
 @Condition标签作用于查询类字段上，condition表示操作符，field表示数据库中的字段名，sql则为注入的查询语句。根据com.baomidou.mybatisplus.core.conditions.AbstractWrapper的代码特性，
-QueryUtil类专门构造一个QueryWrapper作为多重查询条件使用。不是每个类暴露增删改查接口都是安全的，比如User这个随意增和改就不行，怎么办？请看下边的解决方案。<br>
+QueryUtil类专门构造一个QueryWrapper作为多重查询条件使用。
+**不是每个类暴露增删改查接口都是安全的，比如User这个随意增和改就不行，怎么办？**
+请看下边的解决方案。<br>
 
 ```$xslt
 @Api(description = "用户管理")
