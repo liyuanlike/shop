@@ -53,18 +53,18 @@ mybatis-plus:
 # ignored-urls
 ignored:
   urls:
-  - /shop/user/expired
-  - /shop/user/insert
-  - /test/**
-  - /druid/**
-  - /swagger-ui.html
-  - /swagger-resources/**
-  - /swagger/**
-  - /**/v2/api-docs
-  - /**/*.js
-  - /**/*.css
-  - /**/*.png
-  - /**/*.ico
+    - /shop/user/expired
+    - /shop/user/insert
+    - /test/**
+    - /druid/**
+    - /swagger-ui.html
+    - /swagger-resources/**
+    - /swagger/**
+    - /**/v2/api-docs
+    - /**/*.js
+    - /**/*.css
+    - /**/*.png
+    - /**/*.ico
 
 #logging:
 #  level:
