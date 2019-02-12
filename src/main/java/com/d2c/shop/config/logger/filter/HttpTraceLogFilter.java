@@ -1,5 +1,6 @@
 package com.d2c.shop.config.logger.filter;
 
+import com.d2c.shop.config.security.holder.LoginUserHolder;
 import com.d2c.shop.modules.logger.elasticsearch.document.HttpTraceLog;
 import com.d2c.shop.modules.logger.elasticsearch.repository.HttpTraceLogRepository;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -8,10 +9,6 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -83,11 +80,7 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
                 log.setParameterMap(this.mapToString(request.getParameterMap()));
                 log.setRequestBody(this.getRequestBody(request));
                 log.setResponseBody(this.getResponseBody(response));
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                if (!(authentication instanceof AnonymousAuthenticationToken)) {
-                    UserDetails user = (UserDetails) authentication.getPrincipal();
-                    log.setUsername(user.getUsername());
-                }
+                log.setUsername(LoginUserHolder.getUsername());
                 httpTraceLogRepository.save(log);
             }
             updateResponse(response);

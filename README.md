@@ -182,10 +182,8 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
             this.setFieldValByName(FieldConstant.CREATE_DATE, new Date(), metaObject);
         }
         Object createMan = this.getFieldValByName(FieldConstant.CREATE_MAN, metaObject);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (null == createMan && !(authentication instanceof AnonymousAuthenticationToken)) {
-            UserDetails user = (UserDetails) authentication.getPrincipal();
-            this.setFieldValByName(FieldConstant.CREATE_MAN, user.getUsername(), metaObject);
+        if (null == createMan) {
+            this.setFieldValByName(FieldConstant.CREATE_MAN, LoginUserHolder.getUsername(), metaObject);
         }
         Object deleted = this.getFieldValByName(FieldConstant.DELETED, metaObject);
         if (null == deleted) {
@@ -198,11 +196,27 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
         Object modifyDate = this.getFieldValByName(FieldConstant.MODIFY_DATE, metaObject);
         this.setFieldValByName(FieldConstant.MODIFY_DATE, new Date(), metaObject);
         Object modifyMan = this.getFieldValByName(FieldConstant.MODIFY_MAN, metaObject);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (null == modifyMan && !(authentication instanceof AnonymousAuthenticationToken)) {
-            UserDetails user = (UserDetails) authentication.getPrincipal();
-            this.setFieldValByName(FieldConstant.MODIFY_MAN, user.getUsername(), metaObject);
+        if (null == modifyMan) {
+            this.setFieldValByName(FieldConstant.MODIFY_MAN, LoginUserHolder.getUsername(), metaObject);
         }
+    }
+
+}
+```
+```
+@Component
+public class LoginUserHolder {
+
+    public static UserDetails getLoginUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) return null;
+        UserDetails user = (UserDetails) authentication.getPrincipal();
+        return user;
+    }
+
+    public static String getUsername() {
+        if (getLoginUser() == null) return null;
+        return getLoginUser().getUsername();
     }
 
 }
