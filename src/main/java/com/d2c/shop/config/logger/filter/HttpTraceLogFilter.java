@@ -1,6 +1,6 @@
 package com.d2c.shop.config.logger.filter;
 
-import com.d2c.shop.config.security.holder.LoginUserHolder;
+import com.d2c.shop.config.security.context.LoginUserHolder;
 import com.d2c.shop.modules.logger.elasticsearch.document.HttpTraceLog;
 import com.d2c.shop.modules.logger.elasticsearch.repository.HttpTraceLogRepository;
 import io.micrometer.core.instrument.MeterRegistry;

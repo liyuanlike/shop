@@ -2,7 +2,7 @@ package com.d2c.shop.config.mybatis.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.d2c.shop.common.api.constant.FieldConstant;
-import com.d2c.shop.config.security.holder.LoginUserHolder;
+import com.d2c.shop.config.security.context.LoginUserHolder;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 

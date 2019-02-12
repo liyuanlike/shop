@@ -1,4 +1,4 @@
-package com.d2c.shop.config.security.holder;
+package com.d2c.shop.config.security.context;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
