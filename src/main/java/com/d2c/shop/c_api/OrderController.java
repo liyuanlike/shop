@@ -41,7 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Api(description = "订单业务")
 @RestController
-@RequestMapping("/b_api/order")
+@RequestMapping("/c_api/order")
 public class OrderController extends BaseController {
 
     @Autowired

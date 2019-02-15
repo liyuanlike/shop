@@ -15,7 +15,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,22 +26,28 @@ import java.util.Date;
  */
 @Api(description = "店员业务")
 @RestController
-@RequestMapping("/c_api/keeper")
-public class KeeperController extends BaseController {
+@RequestMapping("/b_api/shopkeeper")
+public class ShopKeeperController extends BaseController {
 
     @Autowired
     private ShopkeeperService shopkeeperService;
 
     @ApiOperation(value = "注册")
     @RequestMapping(value = "/clerk/register", method = RequestMethod.POST)
-    public R register(@RequestBody ShopkeeperDO keeper) {
-        Asserts.notNull("账号和密码不能为空", keeper.getAccount(), keeper.getPassword());
-        Asserts.notNull("店铺ID不能为空", keeper.getShopId());
-        if (!Validator.isMobile(keeper.getAccount())) {
+    public R register(String account, String password, Long shopId) {
+        // TODO 验证码
+        Asserts.notNull("账号和密码不能为空", account, password);
+        Asserts.notNull("店铺ID不能为空", shopId);
+        if (!Validator.isMobile(account)) {
             Response.failed(ErrorCode.SERVER_EXCEPTION, "手机号不符合规则");
         }
-        keeper.setRole(ShopkeeperDO.RoleEnum.CLERK.name());
-        keeper.setStatus(0);
+        ShopkeeperDO keeper = ShopkeeperDO.builder()
+                .account(account)
+                .password(new BCryptPasswordEncoder().encode(password))
+                .shopId(shopId)
+                .role(ShopkeeperDO.RoleEnum.CLERK.name())
+                .status(0)
+                .build();
         shopkeeperService.save(keeper);
         return Response.restResult(keeper, ErrorCode.SUCCESS);
     }

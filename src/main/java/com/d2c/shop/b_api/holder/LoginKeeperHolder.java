@@ -30,7 +30,6 @@ public class LoginKeeperHolder {
         String accessToken = request.getHeader(SecurityConstant.ACCESS_TOKEN);
         if (StrUtil.isBlank(accessToken)) throw new ApiException(ErrorCode.LOGIN_EXPIRED);
         try {
-            // JWT解析token
             Claims claims = Jwts.parser()
                     .setSigningKey(SecurityConstant.JWT_SIGN_KEY)
                     .parseClaimsJws(accessToken.replace(SecurityConstant.TOKEN_PREFIX, ""))
