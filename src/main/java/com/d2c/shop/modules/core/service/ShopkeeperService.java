@@ -10,8 +10,6 @@ public interface ShopkeeperService extends IService<ShopkeeperDO> {
 
     ShopkeeperDO findByAccount(String account);
 
-    boolean doLogin(String account, String accessToken, String oldToken);
-
-    ShopkeeperDO findByToken(String token);
+    boolean doLogin(String account, String accessToken);
 
 }

@@ -1,4 +1,4 @@
-package com.d2c.shop.config.security.context;
+package com.d2c.shop.c_api.holder;
 
 import com.d2c.shop.modules.member.model.MemberDO;
 import org.springframework.stereotype.Component;

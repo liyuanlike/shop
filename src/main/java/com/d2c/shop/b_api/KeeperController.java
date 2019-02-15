@@ -62,7 +62,7 @@ public class KeeperController extends BaseController {
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 15 * 1000))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstant.JWT_SIGN_KEY)
                 .compact();
-        shopkeeperService.doLogin(account, accessToken, keeper.getAccessToken());
+        shopkeeperService.doLogin(account, accessToken);
         return Response.restResult(accessToken, ErrorCode.SUCCESS);
     }
 
