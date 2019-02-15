@@ -12,4 +12,10 @@ public interface ShopkeeperService extends IService<ShopkeeperDO> {
 
     boolean doLogin(String account, String accessToken);
 
+    boolean doLogout(String account);
+
+    boolean updateShopId(String account, Long shopId);
+
+    boolean updatePassword(String account, String password);
+
 }

@@ -1,8 +1,8 @@
 package com.d2c.shop.config.security.jwtfilter;
 
 import cn.hutool.core.util.StrUtil;
-import com.d2c.shop.common.api.ErrorCode;
 import com.d2c.shop.common.api.Response;
+import com.d2c.shop.common.api.ResultCode;
 import com.d2c.shop.common.utils.SpringUtil;
 import com.d2c.shop.config.security.authentication.SecurityUserDetails;
 import com.d2c.shop.config.security.constant.SecurityConstant;
@@ -59,10 +59,10 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                 return new UsernamePasswordAuthenticationToken(principal, null, securityUserDetail.getAuthorities());
             }
         } catch (ExpiredJwtException e) {
-            Response.failed(ErrorCode.LOGIN_EXPIRED);
+            Response.failed(ResultCode.LOGIN_EXPIRED);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            Response.failed(ErrorCode.SERVER_EXCEPTION, "accessToken解析错误");
+            Response.failed(ResultCode.SERVER_EXCEPTION, "accessToken解析错误");
         }
         return null;
     }

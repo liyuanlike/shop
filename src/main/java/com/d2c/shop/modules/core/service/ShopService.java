@@ -8,4 +8,6 @@ import com.d2c.shop.modules.core.model.ShopDO;
  */
 public interface ShopService extends IService<ShopDO> {
 
+    ShopDO create(ShopDO shop, String account);
+
 }

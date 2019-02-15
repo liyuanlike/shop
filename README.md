@@ -662,11 +662,7 @@ public class UserController extends BaseCtrl<UserDO, UserQuery> {
     public R insert(@RequestBody UserDO user) {
         Assert.notNull(ErrorCode.REQUEST_PARAM_NULL, user);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        boolean success = service.save(user);
-        if (!success) {
-            return Response.failed(ErrorCode.FAILED);
-        }
-        return Response.restResult(user, ErrorCode.SUCCESS);
+        return super.insert(user);
     }
 
     /**
@@ -679,11 +675,7 @@ public class UserController extends BaseCtrl<UserDO, UserQuery> {
         Assert.notNull(ErrorCode.REQUEST_PARAM_NULL, user);
         user.setUsername(null);
         user.setPassword(null);
-        boolean success = service.updateById(user);
-        if (!success) {
-            return Response.failed(ErrorCode.FAILED);
-        }
-        return Response.restResult(null, ErrorCode.SUCCESS);
+        return super.update(user);
     }
 
 }

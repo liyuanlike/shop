@@ -41,4 +41,40 @@ public class ShopkeeperServiceImpl extends ServiceImpl<ShopkeeperMapper, Shopkee
         return this.update(entity, updateWrapper);
     }
 
+    @Override
+    @Transactional
+    @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
+    public boolean doLogout(String account) {
+        ShopkeeperDO entity = ShopkeeperDO.builder()
+                .accessToken("")
+                .build();
+        UpdateWrapper<ShopkeeperDO> updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("account", account);
+        return this.update(entity, updateWrapper);
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
+    public boolean updateShopId(String account, Long shopId) {
+        ShopkeeperDO entity = ShopkeeperDO.builder()
+                .shopId(shopId)
+                .build();
+        UpdateWrapper<ShopkeeperDO> updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("account", account);
+        return this.update(entity, updateWrapper);
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
+    public boolean updatePassword(String account, String password) {
+        ShopkeeperDO entity = ShopkeeperDO.builder()
+                .password(password)
+                .build();
+        UpdateWrapper<ShopkeeperDO> updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("account", account);
+        return this.update(entity, updateWrapper);
+    }
+
 }

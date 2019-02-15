@@ -2,13 +2,13 @@ package com.d2c.shop.c_api;
 
 import cn.hutool.core.lang.Snowflake;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.d2c.shop.c_api.base.BaseController;
+import com.d2c.shop.c_api.base.BaseControllerC;
 import com.d2c.shop.c_api.handler.OrderHandler;
 import com.d2c.shop.c_api.handler.impl.OrderCouponHandler;
 import com.d2c.shop.c_api.handler.impl.OrderPromotionHandler;
 import com.d2c.shop.common.api.Asserts;
-import com.d2c.shop.common.api.ErrorCode;
 import com.d2c.shop.common.api.Response;
+import com.d2c.shop.common.api.ResultCode;
 import com.d2c.shop.common.api.constant.PrefixConstant;
 import com.d2c.shop.modules.member.model.AddressDO;
 import com.d2c.shop.modules.member.model.MemberDO;
@@ -42,7 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Api(description = "订单业务")
 @RestController
 @RequestMapping("/c_api/order")
-public class OrderController extends BaseController {
+public class OrderController extends BaseControllerC {
 
     @Autowired
     private AddressService addressService;
@@ -110,7 +110,7 @@ public class OrderController extends BaseController {
         }
         // 创建订单
         order = orderService.create(order);
-        return Response.restResult(order, ErrorCode.SUCCESS);
+        return Response.restResult(order, ResultCode.SUCCESS);
     }
 
 }

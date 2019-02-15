@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Cai
  */
-public abstract class BaseController {
+public abstract class BaseControllerC {
 
     @Autowired
     public LoginMemberHolder loginMemberHolder;

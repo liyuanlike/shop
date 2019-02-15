@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.api.IErrorCode;
 /**
  * @author BaiCai
  */
-public enum ErrorCode implements IErrorCode {
+public enum ResultCode implements IErrorCode {
     //
     SUCCESS(1, "操作成功"),
     FAILED(-1, "操作失败"),
@@ -18,7 +18,7 @@ public enum ErrorCode implements IErrorCode {
     private long code;
     private String msg;
 
-    private ErrorCode(long code, String msg) {
+    private ResultCode(long code, String msg) {
         this.code = code;
         this.msg = msg;
     }

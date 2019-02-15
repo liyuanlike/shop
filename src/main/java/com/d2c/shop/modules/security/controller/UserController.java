@@ -1,9 +1,9 @@
 package com.d2c.shop.modules.security.controller;
 
-import com.baomidou.mybatisplus.extension.api.Assert;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.d2c.shop.common.api.ErrorCode;
+import com.d2c.shop.common.api.Asserts;
 import com.d2c.shop.common.api.Response;
+import com.d2c.shop.common.api.ResultCode;
 import com.d2c.shop.common.api.base.extension.BaseExcelCtrl;
 import com.d2c.shop.modules.security.model.UserDO;
 import com.d2c.shop.modules.security.query.UserQuery;
@@ -26,7 +26,7 @@ public class UserController extends BaseExcelCtrl<UserDO, UserQuery> {
     @ApiOperation(value = "登录过期")
     @RequestMapping(value = "/expired", method = RequestMethod.GET)
     public R expired() {
-        return Response.failed(ErrorCode.LOGIN_EXPIRED);
+        return Response.failed(ResultCode.LOGIN_EXPIRED);
     }
 
     /**
@@ -36,13 +36,9 @@ public class UserController extends BaseExcelCtrl<UserDO, UserQuery> {
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public R insert(@RequestBody UserDO user) {
-        Assert.notNull(ErrorCode.REQUEST_PARAM_NULL, user);
+        Asserts.notNull(ResultCode.REQUEST_PARAM_NULL, user);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        boolean success = service.save(user);
-        if (!success) {
-            return Response.failed(ErrorCode.FAILED);
-        }
-        return Response.restResult(user, ErrorCode.SUCCESS);
+        return super.insert(user);
     }
 
     /**
@@ -52,14 +48,10 @@ public class UserController extends BaseExcelCtrl<UserDO, UserQuery> {
     @ApiOperation(value = "用户更新")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public R update(@RequestBody UserDO user) {
-        Assert.notNull(ErrorCode.REQUEST_PARAM_NULL, user);
+        Asserts.notNull(ResultCode.REQUEST_PARAM_NULL, user);
         user.setUsername(null);
         user.setPassword(null);
-        boolean success = service.updateById(user);
-        if (!success) {
-            return Response.failed(ErrorCode.FAILED);
-        }
-        return Response.restResult(null, ErrorCode.SUCCESS);
+        return super.update(user);
     }
 
 }

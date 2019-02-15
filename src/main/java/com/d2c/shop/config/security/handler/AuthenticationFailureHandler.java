@@ -1,7 +1,7 @@
 package com.d2c.shop.config.security.handler;
 
-import com.d2c.shop.common.api.ErrorCode;
 import com.d2c.shop.common.api.Response;
+import com.d2c.shop.common.api.ResultCode;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
@@ -23,11 +23,11 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
-            Response.out(response, Response.failed(ErrorCode.SERVER_EXCEPTION, "账号或密码错误"));
+            Response.out(response, Response.failed(ResultCode.SERVER_EXCEPTION, "账号或密码错误"));
         } else if (exception instanceof DisabledException) {
-            Response.out(response, Response.failed(ErrorCode.SERVER_EXCEPTION, "账号被禁用"));
+            Response.out(response, Response.failed(ResultCode.SERVER_EXCEPTION, "账号被禁用"));
         } else {
-            Response.out(response, Response.failed(ErrorCode.SERVER_EXCEPTION));
+            Response.out(response, Response.failed(ResultCode.SERVER_EXCEPTION));
         }
     }
 
