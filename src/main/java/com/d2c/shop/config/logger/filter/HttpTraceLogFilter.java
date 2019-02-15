@@ -31,8 +31,8 @@ import java.util.Objects;
 @Slf4j
 public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered {
 
-    private static final String NEED_TRACE_PATH_PREFIX = "/shop";
-    private static final String IGNORE_TRACE_PATH = "/shop/user/expired";
+    private static final String NEED_TRACE_PATH_PREFIX = "/back";
+    private static final String IGNORE_TRACE_PATH = "/back/user/expired";
     private static final String IGNORE_CONTENT_TYPE = "multipart/form-data";
     private final MeterRegistry registry;
     @Autowired

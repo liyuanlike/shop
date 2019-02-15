@@ -52,8 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         registry.and()
                 // 表单登录方式
                 .formLogin()
-                .loginPage("/shop/user/expired")
-                .loginProcessingUrl("/shop/user/login")
+                .loginPage("/back/user/expired")
+                .loginProcessingUrl("/back/user/login")
                 .permitAll()
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)

@@ -33,6 +33,10 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
         defaultCacheConfig = defaultCacheConfig.entryTtl(Duration.ofHours(24));
         RedisCacheManager cacheManager = new RedisCacheManager(redisCacheWriter, defaultCacheConfig);
+        ParserConfig.getGlobalInstance().addAccept("com.d2c.shop.modules.core.model.");
+        ParserConfig.getGlobalInstance().addAccept("com.d2c.shop.modules.member.model.");
+        ParserConfig.getGlobalInstance().addAccept("com.d2c.shop.modules.order.model.");
+        ParserConfig.getGlobalInstance().addAccept("com.d2c.shop.modules.product.model.");
         ParserConfig.getGlobalInstance().addAccept("com.d2c.shop.modules.security.model.");
         return cacheManager;
     }

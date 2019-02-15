@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(description = "菜单管理")
 @RestController
-@RequestMapping("/shop/menu")
+@RequestMapping("/back/menu")
 public class MenuController extends BaseCtrl<MenuDO, MenuQuery> {
 
 }

@@ -10,12 +10,13 @@ import lombok.Data;
 @Data
 public class PageModel extends Page {
 
+    // 最大页长
+    public static final long MAX_SIZE = 1000L;
+    //
     @ApiModelProperty(value = "页码")
     private long p;
     @ApiModelProperty(value = "页长")
     private long ps;
-    // 最大页长
-    public static final long MAX_SIZE = 1000L;
 
     public PageModel() {
         super();

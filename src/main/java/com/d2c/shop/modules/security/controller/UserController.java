@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(description = "用户管理")
 @RestController
-@RequestMapping("/shop/user")
+@RequestMapping("/back/user")
 public class UserController extends BaseExcelCtrl<UserDO, UserQuery> {
 
     @ApiOperation(value = "登录过期")

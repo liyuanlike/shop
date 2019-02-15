@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(description = "用户角色关系")
 @RestController
-@RequestMapping("/shop/user_role")
+@RequestMapping("/back/user_role")
 public class UserRoleController extends BaseCtrl<UserRoleDO, UserRoleQuery> {
 
 }
