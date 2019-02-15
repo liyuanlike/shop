@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.d2c.shop.common.api.base.BaseDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.Date;
  * @author BaiCai
  */
 @Data
+@Builder
 @TableName("o_coupon")
 @ApiModel(description = "优惠券表")
 public class CouponDO extends BaseDO {

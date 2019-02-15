@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.d2c.shop.common.api.base.BaseDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * @author BaiCai
  */
 @Data
+@Builder
 @TableName("p_product_detail")
 @ApiModel(description = "商品详情表")
 public class ProductDetailDO extends BaseDO {

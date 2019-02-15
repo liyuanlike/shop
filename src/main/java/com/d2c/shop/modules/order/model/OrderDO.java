@@ -2,7 +2,8 @@ package com.d2c.shop.modules.order.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.modules.member.model.support.IAddressBO;
+import com.d2c.shop.common.api.base.BaseDO;
+import com.d2c.shop.modules.member.model.support.IAddress;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -19,8 +20,24 @@ import java.util.List;
 @Builder
 @TableName("o_order")
 @ApiModel(description = "订单表")
-public class OrderDO extends IAddressBO {
+public class OrderDO extends BaseDO implements IAddress {
 
+    @ApiModelProperty(value = "会员ID")
+    private Long memberId;
+    @ApiModelProperty(value = "会员账号")
+    private String memberAccount;
+    @ApiModelProperty(value = "省份")
+    private String province;
+    @ApiModelProperty(value = "城市")
+    private String city;
+    @ApiModelProperty(value = "区县")
+    private String district;
+    @ApiModelProperty(value = "地址")
+    private String address;
+    @ApiModelProperty(value = "姓名")
+    private String name;
+    @ApiModelProperty(value = "手机")
+    private String mobile;
     @ApiModelProperty(value = "店铺ID")
     private Long shopId;
     @ApiModelProperty(value = "订单号")

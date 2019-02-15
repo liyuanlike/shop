@@ -1,5 +1,6 @@
 package com.d2c.shop.c_api;
 
+import cn.hutool.core.lang.Snowflake;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.d2c.shop.c_api.base.BaseController;
 import com.d2c.shop.c_api.handler.OrderHandler;
@@ -9,7 +10,6 @@ import com.d2c.shop.common.api.Asserts;
 import com.d2c.shop.common.api.ErrorCode;
 import com.d2c.shop.common.api.Response;
 import com.d2c.shop.common.api.constant.PrefixConstant;
-import com.d2c.shop.common.utils.SnowFlakeUtil;
 import com.d2c.shop.modules.member.model.AddressDO;
 import com.d2c.shop.modules.member.model.MemberDO;
 import com.d2c.shop.modules.member.model.support.IAddress;
@@ -67,7 +67,7 @@ public class OrderController extends BaseController {
         Asserts.notNull("收货地址不能为空", address);
         Asserts.eq(address.getMemberId(), member.getId(), "收货地址异常");
         // 生成订单
-        SnowFlakeUtil snowFlake = new SnowFlakeUtil(1, 1);
+        Snowflake snowFlake = new Snowflake(1, 1);
         OrderDO order = OrderDO.builder()
                 .sn(PrefixConstant.ORDER_PREFIX + String.valueOf(snowFlake.nextId()))
                 .status(OrderDO.StatusEnum.WAIT_PAY.getCode())

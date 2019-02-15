@@ -8,4 +8,10 @@ import com.d2c.shop.modules.core.model.ShopkeeperDO;
  */
 public interface ShopkeeperService extends IService<ShopkeeperDO> {
 
+    ShopkeeperDO findByAccount(String account);
+
+    boolean doLogin(String account, String accessToken, String oldToken);
+
+    ShopkeeperDO findByToken(String token);
+
 }

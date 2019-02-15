@@ -31,7 +31,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer);
         RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
-        defaultCacheConfig = defaultCacheConfig.entryTtl(Duration.ofHours(24));
+        defaultCacheConfig = defaultCacheConfig.entryTtl(Duration.ofSeconds(24 * 60 * 60));
         RedisCacheManager cacheManager = new RedisCacheManager(redisCacheWriter, defaultCacheConfig);
         ParserConfig.getGlobalInstance().addAccept("com.d2c.shop.modules.core.model.");
         ParserConfig.getGlobalInstance().addAccept("com.d2c.shop.modules.member.model.");
@@ -45,7 +45,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     public RedisCacheConfiguration redisCacheConfiguration() {
         FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig();
-        configuration = configuration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer)).entryTtl(Duration.ofHours(24));
+        configuration = configuration.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(fastJsonRedisSerializer)).entryTtl(Duration.ofSeconds(24 * 60 * 60));
         return configuration;
     }
 

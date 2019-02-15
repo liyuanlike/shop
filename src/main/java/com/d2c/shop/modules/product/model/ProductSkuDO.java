@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.d2c.shop.common.api.base.BaseDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
  * @author BaiCai
  */
 @Data
+@Builder
 @TableName("p_product_sku")
 @ApiModel(description = "商品SKU表")
 public class ProductSkuDO extends BaseDO {
