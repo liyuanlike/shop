@@ -29,8 +29,6 @@ public class ShopController extends BaseControllerB {
     public R select(@PathVariable Long id) {
         ShopDO shop = shopService.getById(id);
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, shop);
-        ShopkeeperDO keeper = loginKeeperHolder.getLoginKeeper();
-        Asserts.eq(id, keeper.getShopId(), "您不是本店店员");
         return Response.restResult(shop, ResultCode.SUCCESS);
     }
 
