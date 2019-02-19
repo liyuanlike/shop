@@ -2,7 +2,7 @@ package com.d2c.shop.b_api;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.d2c.shop.b_api.base.BaseControllerB;
+import com.d2c.shop.b_api.base.B_BaseController;
 import com.d2c.shop.common.api.Asserts;
 import com.d2c.shop.common.api.PageModel;
 import com.d2c.shop.common.api.Response;
@@ -15,15 +15,9 @@ import com.d2c.shop.modules.product.service.ProductCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Cai
@@ -31,14 +25,14 @@ import java.util.Map;
 @Api(description = "商品类目业务")
 @RestController
 @RequestMapping("/b_api/product_category")
-public class ProductCategoryController extends BaseControllerB {
+public class B_ProductCategoryController extends B_BaseController {
 
     @Autowired
     private ProductCategoryService productCategoryService;
 
     @ApiOperation(value = "类目查询")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public R list(PageModel page) {
+    public R<Collection<ProductCategoryDO>> list(PageModel page) {
         ProductCategoryQuery query = new ProductCategoryQuery();
         query.setShopId(loginKeeperHolder.getLoginId());
         page.setPs(PageModel.MAX_SIZE);
@@ -65,7 +59,7 @@ public class ProductCategoryController extends BaseControllerB {
 
     @ApiOperation(value = "根据ID查询")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public R select(@PathVariable Long id) {
+    public R<ProductCategoryDO> select(@PathVariable Long id) {
         ProductCategoryDO productCategory = productCategoryService.getById(id);
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, productCategory);
         return Response.restResult(productCategory, ResultCode.SUCCESS);
@@ -73,7 +67,7 @@ public class ProductCategoryController extends BaseControllerB {
 
     @ApiOperation(value = "新增")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public R insert(ProductCategoryDO productCategory) {
+    public R<ProductCategoryDO> insert(@RequestBody ProductCategoryDO productCategory) {
         productCategory.setShopId(loginKeeperHolder.getLoginKeeper().getShopId());
         productCategoryService.save(productCategory);
         return Response.restResult(productCategory, ResultCode.SUCCESS);
@@ -81,7 +75,7 @@ public class ProductCategoryController extends BaseControllerB {
 
     @ApiOperation(value = "更新")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public R update(ProductCategoryDO productCategory) {
+    public R<ProductCategoryDO> update(@RequestBody ProductCategoryDO productCategory) {
         ShopkeeperDO keeper = loginKeeperHolder.getLoginKeeper();
         Asserts.eq(productCategory.getShopId(), keeper.getShopId(), "您不是本店店员");
         productCategoryService.updateById(productCategory);

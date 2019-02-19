@@ -3,7 +3,7 @@ package com.d2c.shop.b_api;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.d2c.shop.b_api.base.BaseControllerB;
+import com.d2c.shop.b_api.base.B_BaseController;
 import com.d2c.shop.common.api.Asserts;
 import com.d2c.shop.common.api.PageModel;
 import com.d2c.shop.common.api.Response;
@@ -19,10 +19,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -32,20 +29,20 @@ import java.util.Date;
 @Api(description = "店员业务")
 @RestController
 @RequestMapping("/b_api/shopkeeper")
-public class ShopKeeperController extends BaseControllerB {
+public class B_ShopKeeperController extends B_BaseController {
 
     @Autowired
     private ShopkeeperService shopkeeperService;
 
     @ApiOperation(value = "登录信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public R info() {
+    public R<ShopkeeperDO> info() {
         return Response.restResult(loginKeeperHolder.getLoginKeeper(), ResultCode.SUCCESS);
     }
 
     @ApiOperation(value = "登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public R login(String account, String password) {
+    public R<String> login(String account, String password) {
         Asserts.notNull("账号和密码不能为空", account, password);
         ShopkeeperDO keeper = shopkeeperService.findByAccount(account);
         Asserts.notNull("账号不存在或密码错误", keeper);
@@ -71,7 +68,7 @@ public class ShopKeeperController extends BaseControllerB {
 
     @ApiOperation(value = "店主注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public R register(String account, String password) {
+    public R<ShopkeeperDO> register(String account, String password) {
         // TODO 验证码
         Asserts.notNull("账号和密码不能为空", account, password);
         if (!Validator.isMobile(account)) {
@@ -100,7 +97,7 @@ public class ShopKeeperController extends BaseControllerB {
 
     @ApiOperation(value = "店员分页查询")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public R list(PageModel page) {
+    public R<Page<ShopkeeperDO>> list(PageModel page) {
         ShopkeeperQuery query = new ShopkeeperQuery();
         query.setShopId(loginKeeperHolder.getLoginId());
         Page<ShopkeeperDO> pager = (Page<ShopkeeperDO>) shopkeeperService.page(page, QueryUtil.buildWrapper(query));
@@ -109,7 +106,7 @@ public class ShopKeeperController extends BaseControllerB {
 
     @ApiOperation(value = "根据ID查询")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public R select(@PathVariable Long id) {
+    public R<ShopkeeperDO> select(@PathVariable Long id) {
         ShopkeeperDO keeper = shopkeeperService.getById(id);
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, keeper);
         Asserts.eq(keeper.getId(), loginKeeperHolder.getLoginKeeper().getShopId(), "您不是本店店员");
@@ -118,7 +115,7 @@ public class ShopKeeperController extends BaseControllerB {
 
     @ApiOperation(value = "店员新增")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public R insert(ShopkeeperDO keeper) {
+    public R<ShopkeeperDO> insert(@RequestBody ShopkeeperDO keeper) {
         Asserts.notNull("账号和密码不能为空", keeper.getAccount(), keeper.getPassword());
         if (!Validator.isMobile(keeper.getAccount())) {
             Response.failed(ResultCode.SERVER_EXCEPTION, "手机号不符合规则");
@@ -137,7 +134,7 @@ public class ShopKeeperController extends BaseControllerB {
 
     @ApiOperation(value = "个人信息更新")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public R update(ShopkeeperDO keeper) {
+    public R<ShopkeeperDO> update(@RequestBody ShopkeeperDO keeper) {
         ShopkeeperDO loginKeeper = loginKeeperHolder.getLoginKeeper();
         Asserts.eq(keeper.getId(), loginKeeper.getId(), "您不是本人");
         shopkeeperService.updateById(keeper);

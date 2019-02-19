@@ -35,7 +35,7 @@ public class UserController extends BaseExcelCtrl<UserDO, UserQuery> {
     @Override
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public R insert(@RequestBody UserDO user) {
+    public R<UserDO> insert(@RequestBody UserDO user) {
         Asserts.notNull(ResultCode.REQUEST_PARAM_NULL, user);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         return super.insert(user);
@@ -47,7 +47,7 @@ public class UserController extends BaseExcelCtrl<UserDO, UserQuery> {
     @Override
     @ApiOperation(value = "用户更新")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public R update(@RequestBody UserDO user) {
+    public R<UserDO> update(@RequestBody UserDO user) {
         Asserts.notNull(ResultCode.REQUEST_PARAM_NULL, user);
         user.setUsername(null);
         user.setPassword(null);

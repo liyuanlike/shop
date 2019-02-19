@@ -1,7 +1,7 @@
 package com.d2c.shop.modules.product.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.common.api.base.BaseDO;
+import com.d2c.shop.common.api.base.extension.BaseDelDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Builder
 @TableName("p_product_sku")
 @ApiModel(description = "商品SKU表")
-public class ProductSkuDO extends BaseDO {
+public class ProductSkuDO extends BaseDelDO {
 
     @ApiModelProperty(value = "店铺ID")
     private Long shopId;

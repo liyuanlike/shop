@@ -1,7 +1,7 @@
 package com.d2c.shop.modules.order.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.common.api.base.BaseDO;
+import com.d2c.shop.common.api.base.extension.BaseDelDO;
 import com.d2c.shop.modules.order.model.support.ITradeItem;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Builder
 @TableName("o_order_item")
 @ApiModel(description = "订单明细表")
-public class OrderItemDO extends BaseDO implements ITradeItem {
+public class OrderItemDO extends BaseDelDO implements ITradeItem {
 
     @ApiModelProperty(value = "店铺ID")
     private Long shopId;
@@ -54,55 +54,12 @@ public class OrderItemDO extends BaseDO implements ITradeItem {
 
     public enum TypeEnum {
         //
-        NORMAL("普通", NormalStatusEnum.class), CROWD("拼团", CrowdStatusEnum.class);
+        NORMAL("普通"), CROWD("拼团");
         //
         private String description;
-        private Class<?> statusClazz;
 
-        TypeEnum(String description, Class<?> statusClazz) {
+        TypeEnum(String description) {
             this.description = description;
-            this.statusClazz = statusClazz;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public Class<?> getStatusClazz() {
-            return statusClazz;
-        }
-
-        public void setStatusClazz(Class<?> statusClazz) {
-            this.statusClazz = statusClazz;
-        }
-    }
-
-    public enum NormalStatusEnum {
-        //
-        WAIT_PAY(0, "待付款"),
-        WAIT_DELIVER(4, "待发货"),
-        DELIVERED(6, "已发货"),
-        SUCCESS(8, "交易成功"),
-        CLOSED(-9, "交易关闭");
-        //
-        private Integer code;
-        private String description;
-
-        NormalStatusEnum(Integer code, String description) {
-            this.code = code;
-            this.description = description;
-        }
-
-        public Integer getCode() {
-            return code;
-        }
-
-        public void setCode(Integer code) {
-            this.code = code;
         }
 
         public String getDescription() {
@@ -114,7 +71,7 @@ public class OrderItemDO extends BaseDO implements ITradeItem {
         }
     }
 
-    public enum CrowdStatusEnum {
+    public enum StatusEnum {
         //
         WAIT_PAY(0, "待付款"),
         PAID(1, "已付款"),
@@ -128,7 +85,7 @@ public class OrderItemDO extends BaseDO implements ITradeItem {
         private Integer code;
         private String description;
 
-        CrowdStatusEnum(Integer code, String description) {
+        StatusEnum(Integer code, String description) {
             this.code = code;
             this.description = description;
         }

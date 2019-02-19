@@ -2,7 +2,7 @@ package com.d2c.shop.c_api;
 
 import cn.hutool.core.lang.Snowflake;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.d2c.shop.c_api.base.BaseControllerC;
+import com.d2c.shop.c_api.base.C_BaseController;
 import com.d2c.shop.c_api.handler.OrderHandler;
 import com.d2c.shop.c_api.handler.impl.OrderCouponHandler;
 import com.d2c.shop.c_api.handler.impl.OrderPromotionHandler;
@@ -42,7 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Api(description = "订单业务")
 @RestController
 @RequestMapping("/c_api/order")
-public class OrderController extends BaseControllerC {
+public class C_OrderController extends C_BaseController {
 
     @Autowired
     private AddressService addressService;
@@ -59,7 +59,7 @@ public class OrderController extends BaseControllerC {
 
     @ApiOperation(value = "购物车下单")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public R create(Long[] cartIds, Long addressId, Long couponId) {
+    public R<OrderDO> create(Long[] cartIds, Long addressId, Long couponId) {
         // 登录用户
         MemberDO member = loginMemberHolder.getLoginMember();
         // 收货地址
@@ -88,7 +88,7 @@ public class OrderController extends BaseControllerC {
             Asserts.ge(sku.getStock(), cartItem.getQuantity(), sku.getId() + "的SKU库存不足");
             OrderItemDO orderItem = OrderItemDO.builder()
                     .type(OrderItemDO.TypeEnum.NORMAL.name())
-                    .status(OrderItemDO.NormalStatusEnum.WAIT_PAY.getCode())
+                    .status(OrderItemDO.StatusEnum.WAIT_PAY.getCode())
                     .realPrice(sku.getSellPrice())
                     .build();
             ITradeItem iTradeItem = cartItem;

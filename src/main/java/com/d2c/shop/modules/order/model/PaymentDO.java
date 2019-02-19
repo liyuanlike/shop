@@ -1,7 +1,7 @@
 package com.d2c.shop.modules.order.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.common.api.base.BaseDO;
+import com.d2c.shop.common.api.base.extension.BaseDelDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import lombok.Data;
 @Builder
 @TableName("o_payment")
 @ApiModel(description = "支付表")
-public class PaymentDO extends BaseDO {
+public class PaymentDO extends BaseDelDO {
 
     @ApiModelProperty(value = "订单号")
     private String orderSn;

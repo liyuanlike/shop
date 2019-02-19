@@ -26,7 +26,7 @@ public abstract class BaseCtrl<E extends BaseDO, Q extends BaseQuery> {
 
     @ApiOperation(value = "新增数据")
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public R insert(@RequestBody E entity) {
+    public R<E> insert(@RequestBody E entity) {
         Asserts.notNull(ResultCode.REQUEST_PARAM_NULL, entity);
         service.saveOrUpdate(entity);
         return Response.restResult(entity, ResultCode.SUCCESS);
@@ -34,7 +34,7 @@ public abstract class BaseCtrl<E extends BaseDO, Q extends BaseQuery> {
 
     @ApiOperation(value = "通过ID获取数据")
     @RequestMapping(value = "/select/{id}", method = RequestMethod.GET)
-    public R select(@PathVariable Long id) {
+    public R<E> select(@PathVariable Long id) {
         E entity = service.getById(id);
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, entity);
         return Response.restResult(entity, ResultCode.SUCCESS);
@@ -42,7 +42,7 @@ public abstract class BaseCtrl<E extends BaseDO, Q extends BaseQuery> {
 
     @ApiOperation(value = "通过ID更新数据")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public R update(@RequestBody E entity) {
+    public R<E> update(@RequestBody E entity) {
         Asserts.notNull(ResultCode.REQUEST_PARAM_NULL, entity);
         service.updateById(entity);
         return Response.restResult(entity, ResultCode.SUCCESS);
@@ -57,7 +57,7 @@ public abstract class BaseCtrl<E extends BaseDO, Q extends BaseQuery> {
 
     @ApiOperation(value = "分页查询数据")
     @RequestMapping(value = "/select/page", method = RequestMethod.POST)
-    public R selectPage(PageModel page, Q query) {
+    public R<Page<E>> selectPage(PageModel page, Q query) {
         Page<E> pager = (Page<E>) service.page(page, QueryUtil.buildWrapper(query));
         return Response.restResult(pager, ResultCode.SUCCESS);
     }

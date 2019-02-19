@@ -2,7 +2,7 @@ package com.d2c.shop.modules.order.model;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.common.api.base.BaseDO;
+import com.d2c.shop.common.api.base.extension.BaseDelDO;
 import com.d2c.shop.modules.member.model.support.IAddress;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 @TableName("o_order")
 @ApiModel(description = "订单表")
-public class OrderDO extends BaseDO implements IAddress {
+public class OrderDO extends BaseDelDO implements IAddress {
 
     @ApiModelProperty(value = "会员ID")
     private Long memberId;

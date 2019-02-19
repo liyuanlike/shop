@@ -8,4 +8,8 @@ import com.d2c.shop.modules.product.model.ProductDO;
  */
 public interface ProductService extends IService<ProductDO> {
 
+    ProductDO create(ProductDO product);
+
+    boolean update(ProductDO product);
+
 }

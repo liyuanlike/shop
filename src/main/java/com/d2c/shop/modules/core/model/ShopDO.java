@@ -1,7 +1,7 @@
 package com.d2c.shop.modules.core.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.common.api.base.BaseDO;
+import com.d2c.shop.common.api.base.extension.BaseDelDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.util.Date;
 @Builder
 @TableName("core_shop")
 @ApiModel(description = "店铺表")
-public class ShopDO extends BaseDO {
+public class ShopDO extends BaseDelDO {
 
     @ApiModelProperty(value = "名称")
     private String name;
