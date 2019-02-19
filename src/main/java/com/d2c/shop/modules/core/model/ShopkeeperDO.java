@@ -25,6 +25,10 @@ public class ShopkeeperDO extends BaseDO implements IMember {
     private String account;
     @ApiModelProperty(value = "密码")
     private String password;
+    @ApiModelProperty(value = "昵称")
+    private String nickname;
+    @ApiModelProperty(value = "头像")
+    private String avatar;
     @ApiModelProperty(value = "令牌")
     private String accessToken;
     @ApiModelProperty(value = "店铺ID")

@@ -8,10 +8,10 @@ import lombok.Data;
  * @author BaiCai
  */
 @Data
-public class PageModel extends Page {
+public class PageModel<T> extends Page<T> {
 
     // 最大页长
-    public static final long MAX_SIZE = 1000L;
+    public static final long MAX_SIZE = 500L;
     //
     @ApiModelProperty(value = "页码")
     private long p;
@@ -20,6 +20,7 @@ public class PageModel extends Page {
 
     public PageModel() {
         super();
+        this.setDesc("create_date");
     }
 
     public void setP(long p) {

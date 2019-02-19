@@ -19,12 +19,35 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Swagger2Config {
 
     @Bean
-    public Docket createRestApi() {
+    public Docket bApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("B端接口")
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.regex("/b_api/.*"))
+                .build();
+    }
+
+    @Bean
+    public Docket cApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("C端接口")
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .paths(PathSelectors.regex("/c_api/.*"))
+                .build();
+    }
+
+    @Bean
+    public Docket backApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("后台接口")
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .paths(PathSelectors.regex("/back/.*"))
                 .build();
     }
 

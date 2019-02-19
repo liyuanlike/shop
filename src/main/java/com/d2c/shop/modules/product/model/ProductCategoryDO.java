@@ -1,11 +1,15 @@
 package com.d2c.shop.modules.product.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.d2c.shop.common.api.base.BaseDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author BaiCai
@@ -26,5 +30,8 @@ public class ProductCategoryDO extends BaseDO {
     private Integer level;
     @ApiModelProperty(value = "排序")
     private Integer sort;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "子级列表")
+    private List<ProductCategoryDO> children = new ArrayList<>();
 
 }

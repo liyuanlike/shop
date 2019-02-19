@@ -3,6 +3,7 @@ package com.d2c.shop.common.api;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.api.IErrorCode;
 import com.baomidou.mybatisplus.extension.api.R;
+import io.swagger.annotations.ApiModel;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletResponse;
@@ -12,7 +13,8 @@ import java.io.PrintWriter;
  * @author BaiCai
  */
 @Slf4j
-public class Response extends R {
+@ApiModel(description = "返回结果")
+public class Response<T> extends R<T> {
 
     public static R failed(IErrorCode errorCode, String msg) {
         R result = failed(errorCode);

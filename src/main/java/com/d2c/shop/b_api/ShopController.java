@@ -11,7 +11,10 @@ import com.d2c.shop.modules.core.service.ShopService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Cai
@@ -24,7 +27,7 @@ public class ShopController extends BaseControllerB {
     @Autowired
     private ShopService shopService;
 
-    @ApiOperation(value = "店铺信息查询")
+    @ApiOperation(value = "根据ID查询")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public R select(@PathVariable Long id) {
         ShopDO shop = shopService.getById(id);
@@ -33,15 +36,15 @@ public class ShopController extends BaseControllerB {
     }
 
     @ApiOperation(value = "开店")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public R create(@RequestBody ShopDO shop) {
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public R insert(ShopDO shop) {
         shopService.create(shop, loginKeeperHolder.getLoginAccount());
         return Response.restResult(shop, ResultCode.SUCCESS);
     }
 
     @ApiOperation(value = "更新")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public R update(@RequestBody ShopDO shop) {
+    public R update(ShopDO shop) {
         ShopkeeperDO keeper = loginKeeperHolder.getLoginKeeper();
         Asserts.eq(shop.getId(), keeper.getShopId(), "您不是本店店员");
         shopService.updateById(shop);

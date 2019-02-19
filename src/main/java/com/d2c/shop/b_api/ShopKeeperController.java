@@ -38,7 +38,7 @@ public class ShopKeeperController extends BaseControllerB {
     private ShopkeeperService shopkeeperService;
 
     @ApiOperation(value = "登录信息")
-    @RequestMapping(value = "/info", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
     public R info() {
         return Response.restResult(loginKeeperHolder.getLoginKeeper(), ResultCode.SUCCESS);
     }
@@ -87,25 +87,6 @@ public class ShopKeeperController extends BaseControllerB {
         return Response.restResult(keeper, ResultCode.SUCCESS);
     }
 
-    @ApiOperation(value = "店员新增")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public R create(String account, String password, Integer status, String remark) {
-        Asserts.notNull("账号和密码不能为空", account, password);
-        if (!Validator.isMobile(account)) {
-            Response.failed(ResultCode.SERVER_EXCEPTION, "手机号不符合规则");
-        }
-        ShopkeeperDO keeper = ShopkeeperDO.builder()
-                .account(account)
-                .password(new BCryptPasswordEncoder().encode(password))
-                .shopId(loginKeeperHolder.getLoginKeeper().getShopId())
-                .role(ShopkeeperDO.RoleEnum.CLERK.name())
-                .status(status)
-                .remark(remark)
-                .build();
-        shopkeeperService.save(keeper);
-        return Response.restResult(keeper, ResultCode.SUCCESS);
-    }
-
     @ApiOperation(value = "重置密码")
     @RequestMapping(value = "/password", method = RequestMethod.POST)
     public R password(String account, String password) {
@@ -126,12 +107,40 @@ public class ShopKeeperController extends BaseControllerB {
         return Response.restResult(pager, ResultCode.SUCCESS);
     }
 
-    @ApiOperation(value = "店员信息查询")
+    @ApiOperation(value = "根据ID查询")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public R select(@PathVariable Long id) {
         ShopkeeperDO keeper = shopkeeperService.getById(id);
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, keeper);
         Asserts.eq(keeper.getId(), loginKeeperHolder.getLoginKeeper().getShopId(), "您不是本店店员");
+        return Response.restResult(keeper, ResultCode.SUCCESS);
+    }
+
+    @ApiOperation(value = "店员新增")
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public R insert(ShopkeeperDO keeper) {
+        Asserts.notNull("账号和密码不能为空", keeper.getAccount(), keeper.getPassword());
+        if (!Validator.isMobile(keeper.getAccount())) {
+            Response.failed(ResultCode.SERVER_EXCEPTION, "手机号不符合规则");
+        }
+        ShopkeeperDO entity = ShopkeeperDO.builder()
+                .account(keeper.getAccount())
+                .password(new BCryptPasswordEncoder().encode(keeper.getPassword()))
+                .shopId(loginKeeperHolder.getLoginKeeper().getShopId())
+                .role(ShopkeeperDO.RoleEnum.CLERK.name())
+                .status(keeper.getStatus())
+                .remark(keeper.getRemark())
+                .build();
+        shopkeeperService.save(entity);
+        return Response.restResult(entity, ResultCode.SUCCESS);
+    }
+
+    @ApiOperation(value = "个人信息更新")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public R update(ShopkeeperDO keeper) {
+        ShopkeeperDO loginKeeper = loginKeeperHolder.getLoginKeeper();
+        Asserts.eq(keeper.getId(), loginKeeper.getId(), "您不是本人");
+        shopkeeperService.updateById(keeper);
         return Response.restResult(keeper, ResultCode.SUCCESS);
     }
 

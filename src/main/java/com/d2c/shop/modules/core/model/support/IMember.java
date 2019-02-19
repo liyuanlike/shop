@@ -9,6 +9,10 @@ public interface IMember {
 
     String getPassword();
 
+    String getNickname();
+
+    String getAvatar();
+
     String getAccessToken();
 
 }
