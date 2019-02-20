@@ -51,6 +51,10 @@ public class OrderItemDO extends BaseDelDO implements ITradeItem {
     private BigDecimal realPrice;
     @ApiModelProperty(value = "优惠券加权折减")
     private BigDecimal couponWeightingAmount;
+    @ApiModelProperty(value = "物流公司")
+    private String logisticsCom;
+    @ApiModelProperty(value = "物流单号")
+    private String logisticsNum;
 
     public enum TypeEnum {
         //

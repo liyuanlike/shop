@@ -1,6 +1,5 @@
 package com.d2c.shop.b_api;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.d2c.shop.b_api.base.B_BaseController;
@@ -13,6 +12,7 @@ import com.d2c.shop.modules.core.model.ShopkeeperDO;
 import com.d2c.shop.modules.product.model.ProductDO;
 import com.d2c.shop.modules.product.model.ProductDetailDO;
 import com.d2c.shop.modules.product.model.ProductSkuDO;
+import com.d2c.shop.modules.product.query.ProductDetailQuery;
 import com.d2c.shop.modules.product.query.ProductQuery;
 import com.d2c.shop.modules.product.service.ProductDetailService;
 import com.d2c.shop.modules.product.service.ProductService;
@@ -73,9 +73,9 @@ public class B_ProductController extends B_BaseController {
     @ApiOperation(value = "根据商品ID查询详情")
     @RequestMapping(value = "/detail/{productId}", method = RequestMethod.GET)
     public R<ProductDetailDO> selectDetail(@PathVariable Long productId) {
-        QueryWrapper<ProductDetailDO> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("product_id", productId);
-        ProductDetailDO productDetail = productDetailService.getOne(queryWrapper);
+        ProductDetailQuery query = new ProductDetailQuery();
+        query.setProductId(productId);
+        ProductDetailDO productDetail = productDetailService.getOne(QueryUtil.buildWrapper(query));
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, productDetail);
         return Response.restResult(productDetail, ResultCode.SUCCESS);
     }
@@ -100,9 +100,9 @@ public class B_ProductController extends B_BaseController {
     @ApiOperation(value = "通过商品ID删除详情")
     @RequestMapping(value = "/detail/delete/{productId}", method = RequestMethod.POST)
     public R deleteDetail(@PathVariable Long productId) {
-        QueryWrapper<ProductDetailDO> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("product_id", productId);
-        ProductDetailDO productDetail = productDetailService.getOne(queryWrapper);
+        ProductDetailQuery query = new ProductDetailQuery();
+        query.setProductId(productId);
+        ProductDetailDO productDetail = productDetailService.getOne(QueryUtil.buildWrapper(query));
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, productDetail);
         ShopkeeperDO keeper = loginKeeperHolder.getLoginKeeper();
         Asserts.eq(productDetail.getShopId(), keeper.getShopId(), "您不是本店店员");

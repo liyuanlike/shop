@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -56,5 +57,7 @@ public class ShopDO extends BaseDelDO {
     private String corporationCard;
     @ApiModelProperty(value = "法人身份证图")
     private String corporationPic;
+    @ApiModelProperty(value = "资金余额")
+    private BigDecimal balance;
 
 }

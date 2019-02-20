@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -49,6 +50,10 @@ public class MemberDO extends BaseDelDO implements IMember {
     private String wechatOpenId;
     @ApiModelProperty(value = "微信的UnionId")
     private String wechatUnionId;
+    @ApiModelProperty(value = "消费金额")
+    private BigDecimal consumeAmount;
+    @ApiModelProperty(value = "消费次数")
+    private Integer consumeTimes;
 
     @JsonIgnore
     public String getPassword() {
