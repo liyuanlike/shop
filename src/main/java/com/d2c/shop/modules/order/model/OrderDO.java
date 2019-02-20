@@ -42,6 +42,8 @@ public class OrderDO extends BaseDelDO implements IAddress {
     private Long shopId;
     @ApiModelProperty(value = "订单号")
     private String sn;
+    @ApiModelProperty(value = "类型")
+    private Integer type;
     @ApiModelProperty(value = "状态")
     private Integer status;
     @ApiModelProperty(value = "商品总价")

@@ -87,7 +87,7 @@ public class C_OrderController extends C_BaseController {
             Asserts.notNull("商品SKU不能为空", sku);
             Asserts.ge(sku.getStock(), cartItem.getQuantity(), sku.getId() + "的SKU库存不足");
             OrderItemDO orderItem = OrderItemDO.builder()
-                    .type(OrderItemDO.TypeEnum.NORMAL.name())
+                    .type(OrderItemDO.TypeEnum.NORMAL.getCode())
                     .status(OrderItemDO.StatusEnum.WAIT_PAY.getCode())
                     .realPrice(sku.getSellPrice())
                     .build();

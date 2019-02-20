@@ -1,7 +1,7 @@
 package com.d2c.shop.modules.member.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.common.api.base.BaseDO;
+import com.d2c.shop.common.api.base.extension.BaseDelDO;
 import com.d2c.shop.modules.core.model.support.IMember;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +19,7 @@ import java.util.Date;
 @Builder
 @TableName("m_member")
 @ApiModel(description = "会员表")
-public class MemberDO extends BaseDO implements IMember {
+public class MemberDO extends BaseDelDO implements IMember {
 
     @ApiModelProperty(value = "账号")
     private String account;

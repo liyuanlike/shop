@@ -68,7 +68,7 @@ public class B_ShopKeeperController extends B_BaseController {
 
     @ApiOperation(value = "店主注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public R<ShopkeeperDO> register(String account, String password) {
+    public R<ShopkeeperDO> register(String account, String password, String code) {
         // TODO 验证码
         Asserts.notNull("账号和密码不能为空", account, password);
         if (!Validator.isMobile(account)) {
@@ -86,7 +86,7 @@ public class B_ShopKeeperController extends B_BaseController {
 
     @ApiOperation(value = "重置密码")
     @RequestMapping(value = "/password", method = RequestMethod.POST)
-    public R password(String account, String password) {
+    public R password(String account, String password, String code) {
         // TODO 验证码
         Asserts.notNull("账号和密码不能为空", account, password);
         password = new BCryptPasswordEncoder().encode(password);

@@ -1,7 +1,7 @@
-package com.d2c.shop.modules.member.service;
+package com.d2c.shop.modules.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.d2c.shop.modules.member.model.CouponDO;
+import com.d2c.shop.modules.product.model.CouponDO;
 
 /**
  * @author BaiCai

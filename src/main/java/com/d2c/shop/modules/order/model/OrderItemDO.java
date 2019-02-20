@@ -40,7 +40,7 @@ public class OrderItemDO extends BaseDelDO implements ITradeItem {
     @ApiModelProperty(value = "订单号")
     private String orderSn;
     @ApiModelProperty(value = "类型")
-    private String type;
+    private Integer type;
     @ApiModelProperty(value = "状态")
     private Integer status;
     @ApiModelProperty(value = "支付方式")
@@ -54,12 +54,22 @@ public class OrderItemDO extends BaseDelDO implements ITradeItem {
 
     public enum TypeEnum {
         //
-        NORMAL("普通"), CROWD("拼团");
+        NORMAL(0, "普通"), CROWD(1, "拼团");
         //
+        private Integer code;
         private String description;
 
-        TypeEnum(String description) {
+        TypeEnum(Integer code, String description) {
+            this.code = code;
             this.description = description;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public void setCode(Integer code) {
+            this.code = code;
         }
 
         public String getDescription() {
