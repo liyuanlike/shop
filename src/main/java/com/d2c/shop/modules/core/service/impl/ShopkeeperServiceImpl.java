@@ -1,5 +1,6 @@
 package com.d2c.shop.modules.core.service.impl;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -33,7 +34,7 @@ public class ShopkeeperServiceImpl extends ServiceImpl<ShopkeeperMapper, Shopkee
     @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
     public boolean doLogin(String account, String accessToken) {
         ShopkeeperDO entity = ShopkeeperDO.builder()
-                .accessToken(accessToken)
+                .accessToken(DigestUtil.md5Hex(accessToken))
                 .loginDate(new Date())
                 .build();
         UpdateWrapper<ShopkeeperDO> updateWrapper = new UpdateWrapper();
