@@ -10,7 +10,6 @@ import com.d2c.shop.modules.core.service.ShopkeeperService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -30,7 +29,6 @@ public class ShopkeeperServiceImpl extends ServiceImpl<ShopkeeperMapper, Shopkee
     }
 
     @Override
-    @Transactional
     @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
     public boolean doLogin(String account, String accessToken) {
         ShopkeeperDO entity = ShopkeeperDO.builder()
@@ -43,7 +41,6 @@ public class ShopkeeperServiceImpl extends ServiceImpl<ShopkeeperMapper, Shopkee
     }
 
     @Override
-    @Transactional
     @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
     public boolean doLogout(String account) {
         ShopkeeperDO entity = ShopkeeperDO.builder()
@@ -55,7 +52,6 @@ public class ShopkeeperServiceImpl extends ServiceImpl<ShopkeeperMapper, Shopkee
     }
 
     @Override
-    @Transactional
     @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
     public boolean updateShopId(String account, Long shopId) {
         ShopkeeperDO entity = ShopkeeperDO.builder()
@@ -67,7 +63,6 @@ public class ShopkeeperServiceImpl extends ServiceImpl<ShopkeeperMapper, Shopkee
     }
 
     @Override
-    @Transactional
     @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
     public boolean updatePassword(String account, String password) {
         ShopkeeperDO entity = ShopkeeperDO.builder()
