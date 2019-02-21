@@ -44,6 +44,8 @@ public class ProductDO extends BaseDelDO {
     private Integer virtual;
     @ApiModelProperty(value = "拼团 1,0")
     private Integer crowd;
+    @ApiModelProperty(value = "拼团价")
+    private BigDecimal crowdPrice;
     @ApiModelProperty(value = "拼团开始时间")
     private Date crowdStartDate;
     @ApiModelProperty(value = "拼团结束时间")
