@@ -102,7 +102,7 @@ public class B_OrderController extends B_BaseController {
         Asserts.notNull("修改金额不能为空", productAmount);
         OrderDO order = orderService.getById(orderId);
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, order);
-        Asserts.eq(order.getStatus(), OrderDO.StatusEnum.WAIT_PAY.getCode(), "只能修改未付款订单金额");
+        Asserts.eq(order.getStatus(), OrderDO.StatusEnum.WAIT_PAY.name(), "只能修改未付款订单金额");
         ShopkeeperDO keeper = loginKeeperHolder.getLoginKeeper();
         Asserts.eq(order.getShopId(), keeper.getShopId(), "您不是本店店员");
         Asserts.ge(productAmount.subtract(order.getCouponAmount()), BigDecimal.ZERO, "付款金额必须大于0");
@@ -111,43 +111,6 @@ public class B_OrderController extends B_BaseController {
                 .build();
         entity.setId(orderId);
         orderService.updateById(entity);
-        return Response.restResult(null, ResultCode.SUCCESS);
-    }
-
-    @ApiOperation(value = "分页查询明细")
-    @RequestMapping(value = "/item/list", method = RequestMethod.GET)
-    public R<Page<OrderItemDO>> listItem(PageModel page, OrderItemQuery query) {
-        query.setShopId(loginKeeperHolder.getLoginId());
-        Page<OrderItemDO> pager = (Page<OrderItemDO>) orderItemService.page(page, QueryUtil.buildWrapper(query));
-        return Response.restResult(pager, ResultCode.SUCCESS);
-    }
-
-    @ApiOperation(value = "根据ID查询明细")
-    @RequestMapping(value = "/item/{id}", method = RequestMethod.GET)
-    public R<OrderDO> selectItem(@PathVariable Long id) {
-        OrderItemDO orderItem = orderItemService.getById(id);
-        Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, orderItem);
-        OrderQuery query = new OrderQuery();
-        query.setSn(orderItem.getOrderSn());
-        OrderDO order = orderService.getOne(QueryUtil.buildWrapper(query));
-        order.getOrderItemList().add(orderItem);
-        return Response.restResult(order, ResultCode.SUCCESS);
-    }
-
-    @ApiOperation(value = "订单明细发货")
-    @RequestMapping(value = "/item/deliver", method = RequestMethod.POST)
-    public R deliverItem(Long orderItemId, String logisticsCom, String logisticsNum) {
-        OrderItemDO orderItem = orderItemService.getById(orderItemId);
-        Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, orderItem);
-        Asserts.eq(orderItem.getStatus(), OrderItemDO.StatusEnum.WAIT_DELIVER.getCode(), "订单明细状态异常");
-        ShopkeeperDO keeper = loginKeeperHolder.getLoginKeeper();
-        Asserts.eq(orderItem.getShopId(), keeper.getShopId(), "您不是本店店员");
-        OrderItemDO entity = OrderItemDO.builder()
-                .logisticsCom(logisticsCom)
-                .logisticsNum(logisticsNum)
-                .build();
-        entity.setId(orderItemId);
-        orderItemService.updateById(entity);
         return Response.restResult(null, ResultCode.SUCCESS);
     }
 

@@ -95,7 +95,7 @@ public class B_ShopKeeperController extends B_BaseController {
         return Response.restResult(null, ResultCode.SUCCESS);
     }
 
-    @ApiOperation(value = "店员分页查询")
+    @ApiOperation(value = "分页查询")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public R<Page<ShopkeeperDO>> list(PageModel page) {
         ShopkeeperQuery query = new ShopkeeperQuery();

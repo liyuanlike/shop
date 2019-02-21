@@ -1,5 +1,6 @@
 package com.d2c.shop.modules.product.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.d2c.shop.common.api.base.BaseDO;
 import io.swagger.annotations.ApiModel;
@@ -25,6 +26,9 @@ public class CouponDO extends BaseDO {
     private String name;
     @ApiModelProperty(value = "类型")
     private Integer type;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "类型名")
+    private String typeName;
     @ApiModelProperty(value = "状态 1,0")
     private Integer status;
     @ApiModelProperty(value = "满XX元")
@@ -48,6 +52,10 @@ public class CouponDO extends BaseDO {
     @ApiModelProperty(value = "使用顺延期限-小时")
     private Integer serviceSustain;
 
+    public String getTypeName() {
+        return TypeEnum.getName(this.getType());
+    }
+
     public enum TypeEnum {
         //
         ALL(0, "全部商品"),
@@ -60,6 +68,16 @@ public class CouponDO extends BaseDO {
         TypeEnum(Integer code, String description) {
             this.code = code;
             this.description = description;
+        }
+
+        public static String getName(Integer code) {
+            if (code == null) return "";
+            for (TypeEnum s : TypeEnum.values()) {
+                if (s.getCode() == code) {
+                    return s.getDescription();
+                }
+            }
+            return "";
         }
 
         public Integer getCode() {

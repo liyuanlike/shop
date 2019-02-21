@@ -1,7 +1,9 @@
 package com.d2c.shop.modules.core.model;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.d2c.shop.common.api.base.BaseDO;
+import com.d2c.shop.common.api.base.extension.BaseDelDO;
 import com.d2c.shop.modules.core.model.support.IMember;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +21,7 @@ import java.util.Date;
 @Builder
 @TableName("core_shopkeeper")
 @ApiModel(description = "店铺员工表")
-public class ShopkeeperDO extends BaseDO implements IMember {
+public class ShopkeeperDO extends BaseDelDO implements IMember {
 
     @ApiModelProperty(value = "账号")
     private String account;
@@ -35,6 +37,9 @@ public class ShopkeeperDO extends BaseDO implements IMember {
     private Long shopId;
     @ApiModelProperty(value = "角色")
     private String role;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "角色名")
+    private String roleName;
     @ApiModelProperty(value = "状态 1,0")
     private Integer status;
     @ApiModelProperty(value = "最后登录")
@@ -62,6 +67,11 @@ public class ShopkeeperDO extends BaseDO implements IMember {
         this.accessToken = accessToken;
     }
 
+    public String getRoleName() {
+        if (StrUtil.isBlank(role)) return "";
+        return RoleEnum.valueOf(role).getDescription();
+    }
+
     public enum RoleEnum {
         //
         BOSS("店主"), CLERK("店员");
@@ -69,6 +79,14 @@ public class ShopkeeperDO extends BaseDO implements IMember {
         private String description;
 
         RoleEnum(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
             this.description = description;
         }
     }

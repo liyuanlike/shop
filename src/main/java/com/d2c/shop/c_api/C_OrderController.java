@@ -70,7 +70,7 @@ public class C_OrderController extends C_BaseController {
         Snowflake snowFlake = new Snowflake(1, 1);
         OrderDO order = OrderDO.builder()
                 .sn(PrefixConstant.ORDER_PREFIX + String.valueOf(snowFlake.nextId()))
-                .status(OrderDO.StatusEnum.WAIT_PAY.getCode())
+                .status(OrderDO.StatusEnum.WAIT_PAY.name())
                 .build();
         IAddress iAddress = address;
         BeanUtils.copyProperties(iAddress, order);
@@ -87,8 +87,8 @@ public class C_OrderController extends C_BaseController {
             Asserts.notNull("商品SKU不能为空", sku);
             Asserts.ge(sku.getStock(), cartItem.getQuantity(), sku.getId() + "的SKU库存不足");
             OrderItemDO orderItem = OrderItemDO.builder()
-                    .type(OrderItemDO.TypeEnum.NORMAL.getCode())
-                    .status(OrderItemDO.StatusEnum.WAIT_PAY.getCode())
+                    .type(OrderDO.TypeEnum.NORMAL.name())
+                    .status(OrderItemDO.StatusEnum.WAIT_PAY.name())
                     .realPrice(sku.getSellPrice())
                     .build();
             ITradeItem iTradeItem = cartItem;
