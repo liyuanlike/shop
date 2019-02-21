@@ -106,10 +106,8 @@ public class OrderDO extends BaseDelDO implements IAddress {
 
     public enum StatusEnum {
         //
-        WAIT_PAY("待付款"),
-        PAID("已付款"),
-        SUCCESS("交易成功"),
-        CLOSED("交易关闭");
+        WAIT_PAY("待付款"), PAID("已付款"),
+        SUCCESS("交易成功"), CLOSED("交易关闭");
         //
         private String description;
 

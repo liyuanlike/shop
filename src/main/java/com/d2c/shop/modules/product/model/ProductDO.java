@@ -10,6 +10,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,6 +42,18 @@ public class ProductDO extends BaseDelDO {
     private Integer status;
     @ApiModelProperty(value = "虚拟 1,0")
     private Integer virtual;
+    @ApiModelProperty(value = "拼团 1,0")
+    private Integer crowd;
+    @ApiModelProperty(value = "拼团开始时间")
+    private Date crowdStartDate;
+    @ApiModelProperty(value = "拼团结束时间")
+    private Date crowdEndDate;
+    @ApiModelProperty(value = "拼团的成团时间")
+    private Integer crowdGroupTime;
+    @ApiModelProperty(value = "拼团的商品X人团")
+    private Integer crowdGroupNum;
+    @ApiModelProperty(value = "拼团优惠券ID")
+    private Long couponId;
     @TableField(exist = false)
     @ApiModelProperty(value = "商品的SKU列表")
     private List<ProductSkuDO> skuList = new ArrayList<>();

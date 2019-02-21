@@ -20,9 +20,9 @@ public class OrderItemQuery extends BaseQuery {
     private String[] orderSn;
     @Condition(condition = ConditionEnum.EQ)
     @ApiModelProperty(value = "类型")
-    private Integer type;
+    private String type;
     @Condition(condition = ConditionEnum.EQ)
     @ApiModelProperty(value = "状态")
-    private Integer status;
+    private String status;
 
 }
