@@ -137,6 +137,10 @@ public class B_ShopKeeperController extends B_BaseController {
     public R<ShopkeeperDO> update(@RequestBody ShopkeeperDO keeper) {
         ShopkeeperDO loginKeeper = loginKeeperHolder.getLoginKeeper();
         Asserts.eq(keeper.getId(), loginKeeper.getId(), "您不是本人");
+        // 安全性
+        keeper.setAccount(null);
+        keeper.setPassword(null);
+        keeper.setAccessToken(null);
         shopkeeperService.updateById(keeper);
         return Response.restResult(keeper, ResultCode.SUCCESS);
     }

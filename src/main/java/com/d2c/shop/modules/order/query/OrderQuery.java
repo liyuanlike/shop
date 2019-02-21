@@ -24,5 +24,8 @@ public class OrderQuery extends BaseQuery {
     @Condition(condition = ConditionEnum.EQ)
     @ApiModelProperty(value = "订单号")
     private String sn;
+    @Condition(condition = ConditionEnum.EQ)
+    @ApiModelProperty(value = "会员ID")
+    private Long memberId;
 
 }
