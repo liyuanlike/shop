@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.d2c.shop.common.api.base.BaseDO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * @author BaiCai
  */
 @Data
+@Builder
 @TableName("sys_role")
 @ApiModel(description = "角色表")
 public class RoleDO extends BaseDO {

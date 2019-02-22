@@ -28,9 +28,6 @@ public class ShopFlowDO extends BaseDelDO {
     private String orderSn;
     @ApiModelProperty(value = "支付方式")
     private String paymentType;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "支付方式名")
-    private String paymentTypeName;
     @ApiModelProperty(value = "支付流水")
     private String paymentSn;
     @ApiModelProperty(value = "商品名称")
@@ -39,11 +36,14 @@ public class ShopFlowDO extends BaseDelDO {
     private Integer status;
     @ApiModelProperty(value = "类型")
     private String type;
+    @ApiModelProperty(value = "金额")
+    private BigDecimal amount;
     @TableField(exist = false)
     @ApiModelProperty(value = "类型名")
     private String typeName;
-    @ApiModelProperty(value = "金额")
-    private BigDecimal amount;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "支付方式名")
+    private String paymentTypeName;
 
     public String getTypeName() {
         if (StrUtil.isBlank(type)) return "";

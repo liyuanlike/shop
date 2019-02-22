@@ -22,15 +22,15 @@ public class PaymentDO extends BaseDelDO {
     private String orderSn;
     @ApiModelProperty(value = "支付方式")
     private String paymentType;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "支付方式名")
-    private String paymentTypeName;
     @ApiModelProperty(value = "支付流水")
     private String paymentSn;
     @ApiModelProperty(value = "openId")
     private String openId;
     @ApiModelProperty(value = "unionId")
     private String unionId;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "支付方式名")
+    private String paymentTypeName;
 
     public String getPaymentTypeName() {
         if (StrUtil.isBlank(paymentType)) return "";

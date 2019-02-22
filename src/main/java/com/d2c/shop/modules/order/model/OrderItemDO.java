@@ -43,19 +43,10 @@ public class OrderItemDO extends BaseDelDO implements ITradeItem {
     private String orderSn;
     @ApiModelProperty(value = "类型")
     private String type;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "类型名")
-    private String typeName;
     @ApiModelProperty(value = "状态")
     private String status;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "状态名")
-    private String statusName;
     @ApiModelProperty(value = "支付方式")
     private String paymentType;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "支付方式名")
-    private String paymentTypeName;
     @ApiModelProperty(value = "支付流水")
     private String paymentSn;
     @ApiModelProperty(value = "实时单价")
@@ -66,6 +57,15 @@ public class OrderItemDO extends BaseDelDO implements ITradeItem {
     private String logisticsCom;
     @ApiModelProperty(value = "物流单号")
     private String logisticsNum;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "类型名")
+    private String typeName;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "状态名")
+    private String statusName;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "支付方式名")
+    private String paymentTypeName;
 
     public String getTypeName() {
         if (StrUtil.isBlank(type)) return "";

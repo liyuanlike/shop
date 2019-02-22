@@ -45,14 +45,8 @@ public class OrderDO extends BaseDelDO implements IAddress {
     private String sn;
     @ApiModelProperty(value = "类型")
     private String type;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "类型名")
-    private String typeName;
     @ApiModelProperty(value = "状态")
     private String status;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "状态名")
-    private String statusName;
     @ApiModelProperty(value = "商品总价")
     private BigDecimal productAmount;
     @ApiModelProperty(value = "优惠券折减")
@@ -61,11 +55,17 @@ public class OrderDO extends BaseDelDO implements IAddress {
     private BigDecimal payAmount;
     @ApiModelProperty(value = "支付方式")
     private String paymentType;
+    @ApiModelProperty(value = "支付流水")
+    private String paymentSn;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "类型名")
+    private String typeName;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "状态名")
+    private String statusName;
     @TableField(exist = false)
     @ApiModelProperty(value = "支付方式名")
     private String paymentTypeName;
-    @ApiModelProperty(value = "支付流水")
-    private String paymentSn;
     @TableField(exist = false)
     @ApiModelProperty(value = "订单明细列表")
     private List<OrderItemDO> orderItemList = new ArrayList<>();

@@ -47,11 +47,11 @@ public class ShopkeeperDO extends BaseDelDO implements IMember {
     private Long shopId;
     @ApiModelProperty(value = "角色")
     private String role;
+    @ApiModelProperty(value = "备注")
+    private String remark;
     @TableField(exist = false)
     @ApiModelProperty(value = "角色名")
     private String roleName;
-    @ApiModelProperty(value = "备注")
-    private String remark;
 
     @JsonIgnore
     public String getPassword() {

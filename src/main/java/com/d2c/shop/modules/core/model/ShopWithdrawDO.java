@@ -33,9 +33,6 @@ public class ShopWithdrawDO extends BaseDelDO {
     private BigDecimal arrivalAmount;
     @ApiModelProperty(value = "状态")
     private String status;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "状态名")
-    private String statusName;
     @ApiModelProperty(value = "支付方式")
     private String payType;
     @ApiModelProperty(value = "支付流水")
@@ -44,6 +41,9 @@ public class ShopWithdrawDO extends BaseDelDO {
     private Date payDate;
     @ApiModelProperty(value = "支付账号")
     private String payAccount;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "状态名")
+    private String statusName;
 
     public String getStatusName() {
         if (StrUtil.isBlank(status)) return "";

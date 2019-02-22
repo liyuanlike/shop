@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
  * @author BaiCai
  */
 @Data
+@Builder
 @TableName("sys_user")
 @ApiModel(description = "用户表")
 public class UserDO extends BaseDelDO {
