@@ -8,4 +8,12 @@ import com.d2c.shop.modules.member.model.MemberDO;
  */
 public interface MemberService extends IService<MemberDO> {
 
+    MemberDO findByAccount(String account);
+
+    boolean doLogin(String account, String accessToken);
+
+    boolean doLogout(String account);
+
+    boolean updatePassword(String account, String password);
+
 }

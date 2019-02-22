@@ -1,5 +1,6 @@
 package com.d2c.shop.b_api;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -52,7 +53,7 @@ public class B_ShopKeeperController extends B_BaseController {
         String accessToken = SecurityConstant.TOKEN_PREFIX + Jwts.builder()
                 .setSubject(account)
                 .claim(SecurityConstant.AUTHORITIES, keeper.getRole())
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 15 * 1000))
+                .setExpiration(DateUtil.offsetDay(new Date(), 30))
                 .signWith(SignatureAlgorithm.HS512, SecurityConstant.JWT_SIGN_KEY)
                 .compact();
         shopkeeperService.doLogin(account, accessToken);
