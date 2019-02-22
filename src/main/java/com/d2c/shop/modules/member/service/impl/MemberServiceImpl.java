@@ -30,10 +30,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, MemberDO> imple
 
     @Override
     @CacheEvict(value = "MEMBER", key = "'findByAccount:'+#account")
-    public boolean doLogin(String account, String accessToken) {
+    public boolean doLogin(String account, String loginIp, String accessToken, Date accessExpired) {
         MemberDO entity = MemberDO.builder()
                 .accessToken(DigestUtil.md5Hex(accessToken))
+                .accessExpired(accessExpired)
                 .loginDate(new Date())
+                .loginIp(loginIp)
                 .build();
         UpdateWrapper<MemberDO> updateWrapper = new UpdateWrapper();
         updateWrapper.eq("account", account);

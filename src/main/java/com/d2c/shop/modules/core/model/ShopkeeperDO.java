@@ -33,6 +33,16 @@ public class ShopkeeperDO extends BaseDelDO implements IMember {
     private String avatar;
     @ApiModelProperty(value = "令牌")
     private String accessToken;
+    @ApiModelProperty(value = "令牌时效")
+    private Date accessExpired;
+    @ApiModelProperty(value = "注册IP")
+    private String registerIp;
+    @ApiModelProperty(value = "最后登录时间")
+    private Date loginDate;
+    @ApiModelProperty(value = "最后登录IP")
+    private String loginIp;
+    @ApiModelProperty(value = "状态 1,0")
+    private Integer status;
     @ApiModelProperty(value = "店铺ID")
     private Long shopId;
     @ApiModelProperty(value = "角色")
@@ -40,10 +50,6 @@ public class ShopkeeperDO extends BaseDelDO implements IMember {
     @TableField(exist = false)
     @ApiModelProperty(value = "角色名")
     private String roleName;
-    @ApiModelProperty(value = "状态 1,0")
-    private Integer status;
-    @ApiModelProperty(value = "最后登录")
-    private Date loginDate;
     @ApiModelProperty(value = "备注")
     private String remark;
 

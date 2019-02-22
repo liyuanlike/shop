@@ -48,13 +48,14 @@ public class C_MemberController extends C_BaseController {
         Asserts.gt(member.getStatus(), 0, "账号被封禁，请联系管理员");
         password = new BCryptPasswordEncoder().encode(password);
         Asserts.eq(member.getPassword(), password, "账号不存在或密码错误");
+        Date accessExpired = DateUtil.offsetDay(new Date(), 30);
         String accessToken = SecurityConstant.TOKEN_PREFIX + Jwts.builder()
                 .setSubject(account)
                 .claim(SecurityConstant.AUTHORITIES, "")
-                .setExpiration(DateUtil.offsetDay(new Date(), 30))
+                .setExpiration(accessExpired)
                 .signWith(SignatureAlgorithm.HS512, SecurityConstant.JWT_SIGN_KEY)
                 .compact();
-        memberService.doLogin(account, accessToken);
+        memberService.doLogin(account, getRequestIp(), accessToken, accessExpired);
         return Response.restResult(accessToken, ResultCode.SUCCESS);
     }
 
@@ -67,7 +68,7 @@ public class C_MemberController extends C_BaseController {
 
     @ApiOperation(value = "注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public R<MemberDO> register(String account, String password, String code) {
+    public R<String> register(String account, String password, String code) {
         // TODO 验证码
         Asserts.notNull("账号和密码不能为空", account, password);
         if (!Validator.isMobile(account)) {
@@ -76,10 +77,11 @@ public class C_MemberController extends C_BaseController {
         MemberDO member = MemberDO.builder()
                 .account(account)
                 .password(new BCryptPasswordEncoder().encode(password))
+                .registerIp(getRequestIp())
                 .status(1)
                 .build();
         memberService.save(member);
-        return Response.restResult(member, ResultCode.SUCCESS);
+        return this.login(account, password);
     }
 
     @ApiOperation(value = "重置密码")

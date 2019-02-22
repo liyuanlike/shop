@@ -50,13 +50,14 @@ public class B_ShopKeeperController extends B_BaseController {
         Asserts.gt(keeper.getStatus(), 0, "账号未激活，请联系管理员");
         password = new BCryptPasswordEncoder().encode(password);
         Asserts.eq(keeper.getPassword(), password, "账号不存在或密码错误");
+        Date accessExpired = DateUtil.offsetDay(new Date(), 30);
         String accessToken = SecurityConstant.TOKEN_PREFIX + Jwts.builder()
                 .setSubject(account)
                 .claim(SecurityConstant.AUTHORITIES, keeper.getRole())
-                .setExpiration(DateUtil.offsetDay(new Date(), 30))
+                .setExpiration(accessExpired)
                 .signWith(SignatureAlgorithm.HS512, SecurityConstant.JWT_SIGN_KEY)
                 .compact();
-        shopkeeperService.doLogin(account, accessToken);
+        shopkeeperService.doLogin(account, getRequestIp(), accessToken, accessExpired);
         return Response.restResult(accessToken, ResultCode.SUCCESS);
     }
 
@@ -69,7 +70,7 @@ public class B_ShopKeeperController extends B_BaseController {
 
     @ApiOperation(value = "店主注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public R<ShopkeeperDO> register(String account, String password, String code) {
+    public R<String> register(String account, String password, String code) {
         // TODO 验证码
         Asserts.notNull("账号和密码不能为空", account, password);
         if (!Validator.isMobile(account)) {
@@ -78,11 +79,12 @@ public class B_ShopKeeperController extends B_BaseController {
         ShopkeeperDO keeper = ShopkeeperDO.builder()
                 .account(account)
                 .password(new BCryptPasswordEncoder().encode(password))
+                .registerIp(getRequestIp())
                 .role(ShopkeeperDO.RoleEnum.BOSS.name())
                 .status(1)
                 .build();
         shopkeeperService.save(keeper);
-        return Response.restResult(keeper, ResultCode.SUCCESS);
+        return this.login(account, password);
     }
 
     @ApiOperation(value = "重置密码")
@@ -110,7 +112,7 @@ public class B_ShopKeeperController extends B_BaseController {
     public R<ShopkeeperDO> select(@PathVariable Long id) {
         ShopkeeperDO keeper = shopkeeperService.getById(id);
         Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, keeper);
-        Asserts.eq(keeper.getId(), loginKeeperHolder.getLoginKeeper().getShopId(), "您不是本店店员");
+        Asserts.eq(keeper.getShopId(), loginKeeperHolder.getLoginKeeper().getShopId(), "您不是本店店员");
         return Response.restResult(keeper, ResultCode.SUCCESS);
     }
 
@@ -124,6 +126,7 @@ public class B_ShopKeeperController extends B_BaseController {
         ShopkeeperDO entity = ShopkeeperDO.builder()
                 .account(keeper.getAccount())
                 .password(new BCryptPasswordEncoder().encode(keeper.getPassword()))
+                .registerIp(getRequestIp())
                 .shopId(loginKeeperHolder.getLoginKeeper().getShopId())
                 .role(ShopkeeperDO.RoleEnum.CLERK.name())
                 .status(keeper.getStatus())
@@ -135,15 +138,22 @@ public class B_ShopKeeperController extends B_BaseController {
 
     @ApiOperation(value = "个人信息更新")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public R<ShopkeeperDO> update(@RequestBody ShopkeeperDO keeper) {
-        ShopkeeperDO loginKeeper = loginKeeperHolder.getLoginKeeper();
-        Asserts.eq(keeper.getId(), loginKeeper.getId(), "您不是本人");
-        // 安全性
-        keeper.setAccount(null);
-        keeper.setPassword(null);
-        keeper.setAccessToken(null);
-        shopkeeperService.updateById(keeper);
-        return Response.restResult(keeper, ResultCode.SUCCESS);
+    public R<ShopkeeperDO> update(Long id, String nickname, String avatar, Integer status) {
+        ShopkeeperDO keeper = loginKeeperHolder.getLoginKeeper();
+        ShopkeeperDO entity = ShopkeeperDO.builder()
+                .nickname(nickname)
+                .avatar(avatar)
+                .status(status)
+                .build();
+        entity.setId(keeper.getId());
+        if (id != null) {
+            ShopkeeperDO clerk = shopkeeperService.getById(id);
+            Asserts.notNull(ResultCode.RESPONSE_DATA_NULL, clerk);
+            Asserts.eq(keeper.getShopId(), clerk.getShopId(), "您不是本店店员");
+            entity.setId(id);
+        }
+        shopkeeperService.updateById(entity);
+        return Response.restResult(entity, ResultCode.SUCCESS);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.d2c.shop.modules.core.model.support;
 
+import java.util.Date;
+
 /**
  * @author Cai
  */
@@ -14,5 +16,13 @@ public interface IMember {
     String getAvatar();
 
     String getAccessToken();
+
+    Date getAccessExpired();
+
+    String getRegisterIp();
+
+    Date getLoginDate();
+
+    String getLoginIp();
 
 }

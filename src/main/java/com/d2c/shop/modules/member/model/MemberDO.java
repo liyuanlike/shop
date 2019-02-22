@@ -30,28 +30,20 @@ public class MemberDO extends BaseDelDO implements IMember {
     private String nickname;
     @ApiModelProperty(value = "头像")
     private String avatar;
-    @ApiModelProperty(value = "性别")
-    private String sex;
     @ApiModelProperty(value = "令牌")
     private String accessToken;
+    @ApiModelProperty(value = "令牌时效")
+    private Date accessExpired;
+    @ApiModelProperty(value = "注册IP")
+    private String registerIp;
+    @ApiModelProperty(value = "最后登录时间")
+    private Date loginDate;
+    @ApiModelProperty(value = "最后登录IP")
+    private String loginIp;
     @ApiModelProperty(value = "状态 1,0")
     private Integer status;
-    @ApiModelProperty(value = "最后登录")
-    private Date loginDate;
-    @ApiModelProperty(value = "QQ昵称")
-    private String qqNickname;
-    @ApiModelProperty(value = "QQ头像")
-    private String qqAvatar;
-    @ApiModelProperty(value = "QQ的OpenId")
-    private String qqOpenId;
-    @ApiModelProperty(value = "微信昵称")
-    private String wechatNickname;
-    @ApiModelProperty(value = "微信头像")
-    private String wechatAvatar;
-    @ApiModelProperty(value = "微信的OpenId")
-    private String wechatOpenId;
-    @ApiModelProperty(value = "微信的UnionId")
-    private String wechatUnionId;
+    @ApiModelProperty(value = "性别")
+    private String sex;
     @ApiModelProperty(value = "消费金额")
     private BigDecimal consumeAmount;
     @ApiModelProperty(value = "消费次数")

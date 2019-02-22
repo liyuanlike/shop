@@ -30,10 +30,12 @@ public class ShopkeeperServiceImpl extends ServiceImpl<ShopkeeperMapper, Shopkee
 
     @Override
     @CacheEvict(value = "SHOPKEEPER", key = "'findByAccount:'+#account")
-    public boolean doLogin(String account, String accessToken) {
+    public boolean doLogin(String account, String loginIp, String accessToken, Date accessExpired) {
         ShopkeeperDO entity = ShopkeeperDO.builder()
                 .accessToken(DigestUtil.md5Hex(accessToken))
+                .accessExpired(accessExpired)
                 .loginDate(new Date())
+                .loginIp(loginIp)
                 .build();
         UpdateWrapper<ShopkeeperDO> updateWrapper = new UpdateWrapper();
         updateWrapper.eq("account", account);

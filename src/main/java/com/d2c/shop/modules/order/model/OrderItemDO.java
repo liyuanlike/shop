@@ -84,10 +84,9 @@ public class OrderItemDO extends BaseDelDO implements ITradeItem {
 
     public enum StatusEnum {
         //
-        WAIT_PAY("待付款"), PAID("已付款"),
-        WAIT_DELIVER("待发货"), DELIVERED("已发货"),
-        SUCCESS("交易成功"), WAIT_REFUND("待退款"),
-        REFUNDED("已退款"), CLOSED("交易关闭");
+        WAIT_PAY("待付款"), PAID("已付款"), WAIT_DELIVER("待发货"),
+        DELIVERED("已发货"), RECEIVED("已收货"), SUCCESS("交易成功"),
+        WAIT_REFUND("待退款"), REFUNDED("已退款"), CLOSED("交易关闭");
         //
         private String description;
 
