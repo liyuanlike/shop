@@ -8,4 +8,6 @@ import com.d2c.shop.modules.product.model.CouponDO;
  */
 public interface CouponService extends IService<CouponDO> {
 
+    int updateConsumption(Long id);
+
 }

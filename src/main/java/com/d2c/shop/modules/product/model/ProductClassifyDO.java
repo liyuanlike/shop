@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("p_product_classify")
 @ApiModel(description = "商品分类表")
 public class ProductClassifyDO extends BaseDO {
@@ -28,6 +30,7 @@ public class ProductClassifyDO extends BaseDO {
     private Integer level;
     @ApiModelProperty(value = "排序")
     private Integer sort;
+    @Builder.Default
     @TableField(exist = false)
     @ApiModelProperty(value = "子级列表")
     private List<ProductClassifyDO> children = new ArrayList<>();

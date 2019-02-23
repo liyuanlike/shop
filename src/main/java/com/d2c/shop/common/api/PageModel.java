@@ -3,11 +3,13 @@ package com.d2c.shop.common.api;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BaiCai
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class PageModel<T> extends Page<T> {
 
     // 最大页长

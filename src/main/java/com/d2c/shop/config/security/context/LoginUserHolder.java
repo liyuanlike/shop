@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginUserHolder {
 
-    public static UserDetails getLoginUser() {
+    public UserDetails getLoginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) return null;
         UserDetails user = (UserDetails) authentication.getPrincipal();
         return user;
     }
 
-    public static String getUsername() {
+    public String getUsername() {
         if (getLoginUser() == null) return null;
         return getLoginUser().getUsername();
     }

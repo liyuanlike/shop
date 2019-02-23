@@ -58,9 +58,9 @@ public class B_CouponController extends B_BaseController {
                 queryWrapper = QueryUtil.buildWrapper(query);
                 break;
             case -1:
+                queryWrapper.and(i -> i.eq("status", 0).or().lt("receive_end_date", now));
                 break;
             default:
-                queryWrapper.and(i -> i.eq("status", 0).or().lt("receive_end_date", now));
                 break;
         }
         Page<CouponDO> pager = (Page<CouponDO>) couponService.page(page, queryWrapper);

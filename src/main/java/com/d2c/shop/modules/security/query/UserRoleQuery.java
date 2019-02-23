@@ -5,11 +5,13 @@ import com.d2c.shop.common.api.base.BaseQuery;
 import com.d2c.shop.common.api.emuns.ConditionEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BaiCai
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserRoleQuery extends BaseQuery {
 
     @Condition(condition = ConditionEnum.EQ)

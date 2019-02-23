@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("core_shop")
 @ApiModel(description = "店铺表")
 public class ShopDO extends BaseDelDO {

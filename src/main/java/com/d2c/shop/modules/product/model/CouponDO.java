@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Date;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("p_coupon")
 @ApiModel(description = "优惠券表")
 public class CouponDO extends BaseDO {
@@ -26,9 +28,6 @@ public class CouponDO extends BaseDO {
     private String name;
     @ApiModelProperty(value = "类型")
     private Integer type;
-    @TableField(exist = false)
-    @ApiModelProperty(value = "类型名")
-    private String typeName;
     @ApiModelProperty(value = "状态 1,0")
     private Integer status;
     @ApiModelProperty(value = "满XX元")
@@ -51,9 +50,20 @@ public class CouponDO extends BaseDO {
     private Date serviceEndDate;
     @ApiModelProperty(value = "使用顺延期限-小时")
     private Integer serviceSustain;
+    @ApiModelProperty(value = "备注说明")
+    private String remark;
+    @TableField(exist = false)
+    @ApiModelProperty(value = "类型名")
+    private String typeName;
 
     public String getTypeName() {
         return TypeEnum.getName(this.getType());
+    }
+
+    public boolean available() {
+        Date now = new Date();
+        if (status == 1 && now.after(receiveStartDate) && now.before(receiveEndDate)) return true;
+        return false;
     }
 
     public enum TypeEnum {

@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -19,6 +20,7 @@ import java.util.Date;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("core_shopkeeper")
 @ApiModel(description = "店铺员工表")
 public class ShopkeeperDO extends BaseDelDO implements IMember {

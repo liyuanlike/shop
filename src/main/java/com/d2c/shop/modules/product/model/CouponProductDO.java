@@ -6,12 +6,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BaiCai
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("p_coupon_product")
 @ApiModel(description = "优惠券商品关系表")
 public class CouponProductDO extends BaseDO {

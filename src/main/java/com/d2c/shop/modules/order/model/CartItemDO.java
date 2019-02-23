@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("o_cart_item")
 @ApiModel(description = "购物车表")
 public class CartItemDO extends BaseDO implements ITradeItem {

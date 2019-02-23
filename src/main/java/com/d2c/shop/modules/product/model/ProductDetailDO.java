@@ -6,12 +6,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BaiCai
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("p_product_detail")
 @ApiModel(description = "商品详情表")
 public class ProductDetailDO extends BaseDO {

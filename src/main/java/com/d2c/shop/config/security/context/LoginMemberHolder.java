@@ -1,10 +1,11 @@
-package com.d2c.shop.c_api.holder;
+package com.d2c.shop.config.security.context;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import com.d2c.shop.common.api.Asserts;
 import com.d2c.shop.common.api.ResultCode;
+import com.d2c.shop.common.utils.SpringUtil;
 import com.d2c.shop.config.security.constant.SecurityConstant;
 import com.d2c.shop.modules.member.model.MemberDO;
 import com.d2c.shop.modules.member.service.MemberService;
@@ -24,8 +25,6 @@ public class LoginMemberHolder {
 
     @Autowired
     private HttpServletRequest request;
-    @Autowired
-    private MemberService memberService;
 
     public MemberDO getLoginMember() {
         String accessToken = request.getHeader(SecurityConstant.ACCESS_TOKEN);
@@ -36,7 +35,7 @@ public class LoginMemberHolder {
                     .parseClaimsJws(accessToken.replace(SecurityConstant.TOKEN_PREFIX, ""))
                     .getBody();
             String account = claims.getSubject();
-            MemberDO member = memberService.findByAccount(account);
+            MemberDO member = SpringUtil.getBean(MemberService.class).findByAccount(account);
             Asserts.notNull(ResultCode.LOGIN_EXPIRED, member);
             Asserts.eq(DigestUtil.md5Hex(accessToken), member.getAccessToken(), ResultCode.LOGIN_EXPIRED);
             return member;

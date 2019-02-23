@@ -8,12 +8,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BaiCai
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("o_payment")
 @ApiModel(description = "支付表")
 public class PaymentDO extends BaseDelDO {

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -18,6 +19,7 @@ import java.util.Date;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("m_member")
 @ApiModel(description = "会员表")
 public class MemberDO extends BaseDelDO implements IMember {

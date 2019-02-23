@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
  * @author BaiCai
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public abstract class BaseDO extends Model {
 
     @TableId(value = "id", type = IdType.ID_WORKER)

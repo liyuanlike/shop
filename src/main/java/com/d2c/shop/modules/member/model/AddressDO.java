@@ -7,12 +7,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Cai
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("m_address")
 @ApiModel(description = "地址表")
 public class AddressDO extends BaseDO implements IAddress {

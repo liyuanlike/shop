@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("core_shop_flow")
 @ApiModel(description = "店铺流水表")
 public class ShopFlowDO extends BaseDelDO {

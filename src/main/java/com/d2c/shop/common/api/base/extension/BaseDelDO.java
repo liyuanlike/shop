@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.d2c.shop.common.api.base.BaseDO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author BaiCai
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public abstract class BaseDelDO extends BaseDO {
 
     @TableLogic(value = "0", delval = "1")

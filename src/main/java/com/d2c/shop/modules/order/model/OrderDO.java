@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("o_order")
 @ApiModel(description = "订单表")
 public class OrderDO extends BaseDelDO implements IAddress {
@@ -41,6 +43,8 @@ public class OrderDO extends BaseDelDO implements IAddress {
     private String mobile;
     @ApiModelProperty(value = "店铺ID")
     private Long shopId;
+    @ApiModelProperty(value = "店铺名")
+    private String shopName;
     @ApiModelProperty(value = "订单号")
     private String sn;
     @ApiModelProperty(value = "类型")
@@ -66,6 +70,7 @@ public class OrderDO extends BaseDelDO implements IAddress {
     @TableField(exist = false)
     @ApiModelProperty(value = "支付方式名")
     private String paymentTypeName;
+    @Builder.Default
     @TableField(exist = false)
     @ApiModelProperty(value = "订单明细列表")
     private List<OrderItemDO> orderItemList = new ArrayList<>();

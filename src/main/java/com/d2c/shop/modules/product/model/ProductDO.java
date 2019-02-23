@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("p_product")
 @ApiModel(description = "商品表")
 public class ProductDO extends BaseDelDO {
@@ -56,6 +58,7 @@ public class ProductDO extends BaseDelDO {
     private Integer crowdGroupNum;
     @ApiModelProperty(value = "拼团优惠券ID")
     private Long couponId;
+    @Builder.Default
     @TableField(exist = false)
     @ApiModelProperty(value = "商品的SKU列表")
     private List<ProductSkuDO> skuList = new ArrayList<>();

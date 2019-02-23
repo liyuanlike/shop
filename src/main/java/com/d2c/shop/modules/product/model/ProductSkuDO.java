@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("p_product_sku")
 @ApiModel(description = "商品SKU表")
 public class ProductSkuDO extends BaseDelDO {

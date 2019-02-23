@@ -1,10 +1,11 @@
-package com.d2c.shop.b_api.holder;
+package com.d2c.shop.config.security.context;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.exceptions.ApiException;
 import com.d2c.shop.common.api.Asserts;
 import com.d2c.shop.common.api.ResultCode;
+import com.d2c.shop.common.utils.SpringUtil;
 import com.d2c.shop.config.security.constant.SecurityConstant;
 import com.d2c.shop.modules.core.model.ShopkeeperDO;
 import com.d2c.shop.modules.core.service.ShopkeeperService;
@@ -24,8 +25,6 @@ public class LoginKeeperHolder {
 
     @Autowired
     private HttpServletRequest request;
-    @Autowired
-    private ShopkeeperService shopkeeperService;
 
     public ShopkeeperDO getLoginKeeper() {
         String accessToken = request.getHeader(SecurityConstant.ACCESS_TOKEN);
@@ -36,7 +35,7 @@ public class LoginKeeperHolder {
                     .parseClaimsJws(accessToken.replace(SecurityConstant.TOKEN_PREFIX, ""))
                     .getBody();
             String account = claims.getSubject();
-            ShopkeeperDO keeper = shopkeeperService.findByAccount(account);
+            ShopkeeperDO keeper = SpringUtil.getBean(ShopkeeperService.class).findByAccount(account);
             Asserts.notNull(ResultCode.LOGIN_EXPIRED, keeper);
             Asserts.eq(DigestUtil.md5Hex(accessToken), keeper.getAccessToken(), ResultCode.LOGIN_EXPIRED);
             return keeper;

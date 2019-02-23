@@ -5,6 +5,7 @@ import com.d2c.shop.common.api.base.BaseQuery;
 import com.d2c.shop.common.api.emuns.ConditionEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  * @author BaiCai
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class CouponQuery extends BaseQuery {
 
     @Condition(condition = ConditionEnum.GT, field = "receive_start_date")

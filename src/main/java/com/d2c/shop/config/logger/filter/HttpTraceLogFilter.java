@@ -1,12 +1,12 @@
 package com.d2c.shop.config.logger.filter;
 
+import com.d2c.shop.common.utils.SpringUtil;
 import com.d2c.shop.config.security.context.LoginUserHolder;
 import com.d2c.shop.modules.logger.elasticsearch.document.HttpTraceLog;
 import com.d2c.shop.modules.logger.elasticsearch.repository.HttpTraceLogRepository;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,8 +35,6 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
     private static final String IGNORE_TRACE_PATH = "/back/user/expired";
     private static final String IGNORE_CONTENT_TYPE = "multipart/form-data";
     private final MeterRegistry registry;
-    @Autowired
-    private HttpTraceLogRepository httpTraceLogRepository;
 
     public HttpTraceLogFilter(MeterRegistry registry) {
         this.registry = registry;
@@ -80,8 +78,8 @@ public class HttpTraceLogFilter extends OncePerRequestFilter implements Ordered 
                 log.setParameterMap(this.mapToString(request.getParameterMap()));
                 log.setRequestBody(this.getRequestBody(request));
                 log.setResponseBody(this.getResponseBody(response));
-                log.setUsername(LoginUserHolder.getUsername());
-                httpTraceLogRepository.save(log);
+                log.setUsername(SpringUtil.getBean(LoginUserHolder.class).getUsername());
+                SpringUtil.getBean(HttpTraceLogRepository.class).save(log);
             }
             updateResponse(response);
         }

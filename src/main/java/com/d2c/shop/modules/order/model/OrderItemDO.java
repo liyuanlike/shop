@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
@@ -17,12 +18,15 @@ import java.math.BigDecimal;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("o_order_item")
 @ApiModel(description = "订单明细表")
 public class OrderItemDO extends BaseDelDO implements ITradeItem {
 
     @ApiModelProperty(value = "店铺ID")
     private Long shopId;
+    @ApiModelProperty(value = "店铺名")
+    private String shopName;
     @ApiModelProperty(value = "会员ID")
     private Long memberId;
     @ApiModelProperty(value = "会员账号")

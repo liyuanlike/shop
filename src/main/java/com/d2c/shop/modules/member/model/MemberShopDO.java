@@ -6,12 +6,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Cai
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = false)
 @TableName("m_member_shop")
 @ApiModel(description = "会员店铺关系表")
 public class MemberShopDO extends BaseDO {
