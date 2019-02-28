@@ -1,5 +1,6 @@
 package com.d2c.shop.modules.product.model;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.d2c.shop.common.api.base.extension.BaseDelDO;
@@ -62,5 +63,10 @@ public class ProductDO extends BaseDelDO {
     @TableField(exist = false)
     @ApiModelProperty(value = "商品的SKU列表")
     private List<ProductSkuDO> skuList = new ArrayList<>();
+
+    public String getFirstPic() {
+        if (StrUtil.isBlank(pic)) return null;
+        return pic.split(",")[0];
+    }
 
 }
